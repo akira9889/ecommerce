@@ -43,3 +43,4 @@ src/backend/*.ntvs*
 src/backend/*.njsproj
 src/backend/*.sln
 src/backend/*.sw?
+src/backend/.env
