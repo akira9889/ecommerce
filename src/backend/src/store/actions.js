@@ -27,7 +27,7 @@ export function logout({ commit }) {
 
 export function getProducts({ commit }, { url = null, search = '', perPage = 10, sort_field , sort_direction }) {
   commit('setProducts', [true])
-  url = url || '/product'
+  url = url || '/products'
   return axiosClient.get(url, {
     params: {
       search,
@@ -43,3 +43,35 @@ export function getProducts({ commit }, { url = null, search = '', perPage = 10,
       commit('setProducts', [false])
     })
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
