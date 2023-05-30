@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .py-navbar-item {
+    @apply py-6
+  }
+
+  .pt-navbar-item {
+    @apply pt-6
+  }
+
+  .pb-navbar-item {
+    @apply pb-6
+  }
+
+  .px-navbar-item {
+    @apply px-3
+  }
+
+  .pl-navbar-item {
+    @apply pl-3
+  }
+
+  .pr-navbar-item {
+    @apply pr-3
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply text-white bg-purple-600 py-2 px-4 rounded shadow-md hover:bg-purple-700 active:bg-purple-800 transition-colors;
+  }
+}
+
+body {
+  background-color: #e5e7eb;
+}
+
+.wysiwyg-content h3,
+.wysiwyg-content h4 {
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.wysiwyg-content table>tbody>tr>td {
+  padding: 0.25rem 0.125rem;
+}
+
+.wysiwyg-content table>tbody>tr>td:first-child {
+  font-weight: bold;
+}
+
+.table>tbody>tr>td,
+.table>thead>tr>th {
+  padding: 0.5rem;
+}
+
+.table-sm>tbody>tr>td,
+.table-sm>thead>tr>th {
+  padding: 0.25rem;
+}
+
+[type=checkbox] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  z-index: 1;
+}
+
+[type=checkbox]+span {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-color: #fff;
+  border-radius: 5px;
+  position: relative;
+  border: 2px solid rgba(0, 0, 0, 0);
+}
+
+[type=checkbox]:focus+span {
+  border: 2px solid rgb(168 85 247);
+}
+
+[type=checkbox]:checked+span {
+  background-color: rgb(126 58 242);
+}
+
+[type=checkbox]+span::after {
+  border-bottom: 3px solid #fff;
+  border-right: 3px solid #fff;
+  content: "";
+  display: block;
+  height: 12px;
+  left: 7px;
+  opacity: 1;
+  position: absolute;
+  top: 2px;
+  transform: rotate(45deg);
+  transition: opacity .3s;
+  width: 5px;
+}
+
+[type=checkbox]:checked+span::after {
+    opacity: 1;
+}
