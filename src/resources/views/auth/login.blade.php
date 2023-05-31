@@ -11,7 +11,7 @@
         </p>
         <div class="mb-4">
             <x-text-input :errors="$errors" id="loginEmail" type="email" name="email" placeholder="メールアドレス"
-                :value="old('email')"/>
+                :value="old('email')" autofocus/>
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
         <div class="mb-4">
