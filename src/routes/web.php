@@ -15,6 +15,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', [ProductController::class, 'index'])->name('home');
+Route::get('/product/{product:slug}', [ProductController::class, 'view'])->name('product.view');
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
