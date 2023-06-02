@@ -4,7 +4,7 @@ import ProductModal from './ProductModal.vue'
 import { ref } from 'vue';
 import store from '../../store';
 
-const DEFAULT_PRODUCT_MODEL = {
+const DEFAULT_PRODUCT = {
     id: '',
     title: '',
     image: '',
@@ -13,7 +13,7 @@ const DEFAULT_PRODUCT_MODEL = {
 }
 
 const showModal = ref(false)
-const productModel = ref({ ...DEFAULT_PRODUCT_MODEL })
+const productModel = ref({ ...DEFAULT_PRODUCT })
 
 function showProductModal() {
     showModal.value = true
@@ -27,6 +27,10 @@ function editProduct(product) {
     showProductModal()
 }
 
+function onModalClose() {
+    productModel.value = { ...DEFAULT_PRODUCT }
+}
+
 </script>
 
 <template>
@@ -37,7 +41,7 @@ function editProduct(product) {
             商品を追加
         </button>
     </div>
-    <ProductModal v-model="showModal" :product="productModel"/>
+    <ProductModal v-model="showModal" :product="productModel" @close="onModalClose"/>
     <ProductsTable @clickEdit="editProduct"/>
 </template>
 
