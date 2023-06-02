@@ -72,7 +72,6 @@ function deleteProduct(product) {
   <div class="bg-white p-5 rounded-lg shadow animate-fade-in-down">
     <div class="flex justify-between border-b-2 pb-3">
       <div class="flex items-center">
-        <span class="whitespace-nowrap mr-3">Per Page</span>
         <select @change="getProducts(null)" v-model="perPage"
           class="appearance-none relative block w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
           <option value="5">5</option>
@@ -81,6 +80,7 @@ function deleteProduct(product) {
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
+        <span class="whitespace-nowrap ml-3">件ごとに表示</span>
       </div>
       <div>
         <input type="text" v-model="search" @change="getProducts(null)" placeholder="商品を検索"
@@ -119,7 +119,6 @@ function deleteProduct(product) {
               <div>
                 <MenuButton class="inline-flex items-center justify-center rounded-full w-10 h-10 bg-black bg-opacity-0">
                   <DotsVerticalIcon class="h-5 w-5 text-indigo-500" aria-hidden="true" />
-
                 </MenuButton>
               </div>
               <transition enter-active-class="transition duration-100 ease-out"
@@ -127,7 +126,7 @@ function deleteProduct(product) {
                 leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100"
                 leave-to-class="transform scale-95 opacity-0">
                 <MenuItems
-                  class="absolute z-10 right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-">
+                  class="absolute z-10 left-full -top-1/2 w-28 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-">
                   <div class="px-1 py-1">
                     <MenuItem v-slot="{ active }">
                     <button :class="[
