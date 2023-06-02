@@ -9,7 +9,7 @@
 
             <a href="{{ route('register') }}" class="text-sm text-purple-700 hover:text-purple-600">新規登録する</a>
         </p>
-        
+
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -27,7 +27,8 @@
         <div class="flex justify-between items-center mb-7">
             <div class="flex items-center relative">
                 <input id="loginRememberMe" type="checkbox" name="remember"
-                    class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-3 cursor-pointer">
+                    class="w-4 h-4 text-purple-600 bg-white border-white rounded focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 mr-3 cursor-pointer"
+                    >
                 <label for="loginRememberMe">次回自動ログイン</label>
             </div>
             <a href="{{ route('password.request') }}"
