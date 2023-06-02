@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6b46f592549c4409866492283347e57",
+    "content-hash": "edc57ebf644844fdad830a0207f408e3",
     "packages": [
         {
             "name": "brick/math",
@@ -1801,6 +1801,68 @@
                 }
             ],
             "time": "2022-04-17T13:12:02+00:00"
+        },
+        {
+            "name": "mbilbille/jpnforphp",
+            "version": "0.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mbilbille/jpnforphp.git",
+                "reference": "5e87ee9d4b0b41389002cbcbf384c42987e3fbae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mbilbille/jpnforphp/zipball/5e87ee9d4b0b41389002cbcbf384c42987e3fbae",
+                "reference": "5e87ee9d4b0b41389002cbcbf384c42987e3fbae",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "replace": {
+                "jpnforphp/analyzer": "self.version",
+                "jpnforphp/converter": "self.version",
+                "jpnforphp/helper": "self.version",
+                "jpnforphp/inflector": "self.version",
+                "jpnforphp/transliterator": "self.version"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "7.*",
+                "symfony/yaml": ">=2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.9-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "JpnForPhp": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthieu Bilbille",
+                    "email": "matthieu.bilbille@gmail.com",
+                    "homepage": "https://github.com/mbilbille"
+                }
+            ],
+            "description": "A tiny PHP lib which provides nice functions & wrappers to interact with Japanese language.",
+            "homepage": "http://mbilbille.github.com/jpnforphp/",
+            "keywords": [
+                "japanese",
+                "library"
+            ],
+            "support": {
+                "issues": "https://github.com/mbilbille/jpnforphp/issues",
+                "source": "https://github.com/mbilbille/jpnforphp/tree/master"
+            },
+            "time": "2019-05-23T13:33:07+00:00"
         },
         {
             "name": "monolog/monolog",
