@@ -6,7 +6,7 @@
             <a href="{{ route('login') }}" class="text-sm text-purple-700 hover:text-purple-600">既存のアカウントでログイン</a>
         </p>
         <div class="mb-6">
-            <x-text-input placeholder="氏名" type="text" name="name" :value="old('name')" />
+            <x-text-input placeholder="氏名" type="text" name="name" :value="old('name')" autofocus/>
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
         </p>
@@ -15,12 +15,12 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
         <div class="mb-6">
-            <x-text-input placeholder="パスワード" type="password" name="password" />
+            <x-text-input placeholder="パスワード" type="password" name="password" autocomplete/>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
         </div>
         <div class="mb-8">
-            <x-text-input placeholder="パスワード確認" type="password" name="password_confirmation" />
+            <x-text-input placeholder="パスワード確認" type="password" name="password_confirmation" autocomplete/>
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
