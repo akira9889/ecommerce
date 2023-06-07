@@ -1,5 +1,11 @@
 <x-app-layout>
-    <div class="container mx-auto my-12">
+    <div x-data="productItem({{ json_encode([
+        'id' => $product->id,
+        'image' => $product->image,
+        'title' => $product->title,
+        'price' => $product->price,
+        'addToCartUrl' => route('cart.add', $product),
+    ]) }})" class="container mx-auto my-12">
         <div class="grid gap-6 grid-cols-1 lg:grid-cols-5">
             <div class="lg:col-span-3">
                 <div x-data="{
@@ -63,10 +69,10 @@
                     <label for="quantity" class="block font-bold mr-4">
                         数量
                     </label>
-                    <input type="number" name="quantity" x-ref="quantityEl" value="1"
-                        class="w-32 focus:border-purple-500 focus:outline-none rounded"/>
+                    <input type="number" name="quantity" value="1" min="1"
+                        class="w-32 focus:border-purple-500 focus:outline-none rounded" />
                 </div>
-                <button @click="addToCart(id, $refs.quantityEl.value)"
+                <button @click="addToCart()"
                     class="btn-primary py-4 text-lg flex justify-center min-w-0 w-full mb-6">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
@@ -77,12 +83,11 @@
                 </button>
                 <div class="mb-6" x-data="{ expanded: false }">
                     <div x-show="expanded" x-collapse.min.120px class="text-gray-500 wysiwyg-content">
-                      {{ $product->description }}
+                        {{ $product->description }}
                     </div>
                     <p class="text-right">
                         <a @click="expanded = !expanded" href="javascript:void(0)"
-                            class="text-purple-500 hover:text-purple-700"
-                            x-text="expanded ? '文を折りたたむ' : '全文表示'"></a>
+                            class="text-purple-500 hover:text-purple-700" x-text="expanded ? '文を折りたたむ' : '全文表示'"></a>
                     </p>
                 </div>
             </div>

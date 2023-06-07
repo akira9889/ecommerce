@@ -1,4 +1,9 @@
-<header x-data="{ mobileMenuOpen: false }" class="flex justify-between bg-slate-800 shadow-md text-white">
+<header x-data="{
+    mobileMenuOpen: false,
+    cartItemsCount: {{ \App\Http\Helpers\Cart::getCartItemsCount() }}
+}"
+@cart-change.window="cartItemsCount = $event.detail.count"
+class="flex justify-between bg-slate-800 shadow-md text-white">
     <div>
         <a href="{{ route('home') }}" class="block py-navbar-item pl-5"> Logo </a>
     </div>
@@ -7,7 +12,7 @@
         :class="mobileMenuOpen ? 'left-0' : '-left-[220px]'">
         <ul>
             <li>
-                <a href="/src/cart.html"
+                <a href="{{ 'cart.index' }}"
                     class="relative flex items-center justify-between py-2 px-3 transition-colors hover:bg-slate-800">
                     <div class="flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 -mt-1" fill="none"
@@ -18,7 +23,7 @@
                         カート
                     </div>
                     <!-- Cart Items Counter -->
-                    <small x-show="$store.header.cartItems" x-transition x-text="$store.header.cartItems"
+                    <small x-show="cartItemsCount" x-transition x-text="cartItemsCount"
                         class="py-[2px] px-[8px] rounded-full bg-red-500"></small>
                     <!--/ Cart Items Counter -->
                 </a>
@@ -61,9 +66,7 @@
                                 </svg>
                                 お気に入り
 
-                                <small x-show="$store.header.watchlistItems" x-transition
-                                    x-text="$store.header.watchlistItems"
-                                    class="py-[2px] px-[8px] rounded-full bg-red-500"></small>
+                                <small x-transition class="py-[2px] px-[8px] rounded-full bg-red-500"></small>
                             </a>
                         </li>
                         <li class="hover:bg-slate-900">
@@ -117,7 +120,7 @@
     <nav class="hidden md:block">
         <ul class="grid grid-flow-col items-center">
             <li>
-                <a href="/src/cart.html"
+                <a href="{{ route('cart.index') }}"
                     class="relative inline-flex items-center py-navbar-item px-navbar-item hover:bg-slate-900">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
@@ -125,7 +128,7 @@
                             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                     カート
-                    <small x-show="$store.header.cartItems" x-transition x-cloak x-text="$store.header.cartItems"
+                    <small x-show="cartItemsCount" x-transition x-cloak x-text="cartItemsCount"
                         class="absolute z-[100] top-4 -right-3 py-[2px] px-[8px] rounded-full bg-red-500"></small>
                 </a>
             </li>
@@ -172,9 +175,7 @@
                                     お気に入り
                                 </div>
 
-                                <small x-show="$store.header.watchlistItems" x-transition
-                                    x-text="$store.header.watchlistItems"
-                                    class="py-[2px] px-[8px] rounded-full bg-red-500"></small>
+                                <small x-transition class="py-[2px] px-[8px] rounded-full bg-red-500"></small>
                             </a>
                         </li>
                         <li>
