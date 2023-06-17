@@ -27,10 +27,10 @@ Route::middleware(['guestOrVerified'])->group(function() {
         Route::post('/update-quantity/{product:slug}', [CartController::class, 'updateQuantity'])->name('update-quantity');
     });
 
-    Route::middleware('auth')->group(function () {
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::middleware('auth', 'verified')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'view'])->name('profile');
+        Route::post('/profile', [ProfileController::class, 'store'])->name('profile.update');
+        Route::post('/profile/password-update', [ProfileController::class, 'passwordUpdate'])->name('profile_password.update');
     });
 });
 
