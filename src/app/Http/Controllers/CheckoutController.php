@@ -167,6 +167,50 @@ class CheckoutController extends Controller
         return redirect($session->url);
     }
 
+    public function webhook(Request $request)
+    {
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+        $endpoint_secret = env('STRIPE_WEBHOOK_KEY');
+        $payload = $request->getContent();
+        $sig_header = $request->header('stripe-signature');
+
+        $event = null;
+        try {
+            $event = \Stripe\Webhook::constructEvent(
+                $payload,
+                $sig_header,
+                $endpoint_secret
+            );
+        } catch (\UnexpectedValueException $e) {
+            // Invalid payload.
+            return response('Invalid payload', 401);
+        } catch (\Stripe\Exception\SignatureVerificationException $e) {
+            // Invalid Signature.
+            return response('Invalid signature', 402);
+        }
+
+        // Handle the event
+        switch ($event->type) {
+            case 'checkout.session.completed':
+                $paymentIntent = $event->data->object;
+
+                $sessionId = $paymentIntent['id'];
+
+                $payment = Payment::query()
+                ->where(['session_id' => $sessionId, 'status' => PaymentStatus::Pending])
+                ->first();
+                if ($payment) {
+                    $this->updateOrderAndSession($payment);
+                }
+
+            default:
+                echo 'Received unknown event type ' . $event->type;
+        }
+
+        return response('', 200);
+    }
+
     private function updateOrderAndSession(Payment $payment)
     {
         $payment->status = PaymentStatus::Paid;

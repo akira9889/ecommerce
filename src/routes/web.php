@@ -42,4 +42,6 @@ Route::middleware(['guestOrVerified'])->group(function() {
     });
 });
 
+Route::post('/webhook/stripe', [CheckoutController::class, 'webhook']);
+
 require __DIR__.'/auth.php';
