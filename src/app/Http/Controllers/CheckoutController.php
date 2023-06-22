@@ -24,6 +24,7 @@ class CheckoutController extends Controller
     public function checkout(Request $request)
     {
         list($products, $cartItems) = Cart::getProductsAndCartItems();
+        $orderItems = [];
         $lineItems = [];
         $totalPrice = 0;
         foreach ($products as $product) {
@@ -40,6 +41,12 @@ class CheckoutController extends Controller
                     ],
                 ],
                 'quantity' => $quantity,
+            ];
+
+            $orderItems[] = [
+                'product_id' => $product->id,
+                'quantity' => $quantity,
+                'unit_price' => $product->price
             ];
         }
 
@@ -64,6 +71,12 @@ class CheckoutController extends Controller
         ];
 
         $order = Order::create($orderData);
+
+        //Create Order Items
+        foreach ($orderItems as $orderItem) {
+            $orderItem['order_id'] = $order->id;
+            OrderItem::create($orderItem);
+        }
 
         // Create Payment
         $paymentData = [
