@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('total_price');
             $table->string('status', 45);
             $table->timestamps();
-            $table->foreignIdFor(User::class, 'crated_by')->nullable();
+            $table->foreignIdFor(User::class, 'created_by')->nullable();
             $table->foreignIdFor(User::class, 'updated_by')->nullable();
         });
     }

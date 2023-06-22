@@ -44,8 +44,8 @@
                                         <div class="flex justify-between items-center">
                                             <div class="flex items-center">
                                                 数量:
-                                                <input type="number" x-model="product.quantity" @change="changeQuantity()"
-                                                    min="1"
+                                                <input type="number" x-model="product.quantity"
+                                                    @change="changeQuantity()" min="1"
                                                     class="ml-3 py-1 border-gray-200 focus:border-purple-600 focus:ring-purple-600 w-16" />
                                             </div>
                                             <a @click.prevent="removeItemFromCart()" href="#"
@@ -68,9 +68,12 @@
                         <p class="text-gray-500 mb-6">
                             送料と税金は購入時に計算されます。
                         </p>
-                        <button type="submit" class="btn-primary w-full py-3 text-lg">
-                            レジに進む
-                        </button>
+                        <form action="{{ route('cart.checkout') }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn-primary w-full py-3 text-lg">
+                                レジに進む
+                            </button>
+                        </form>
                     </div>
                 </div>
             </template>
