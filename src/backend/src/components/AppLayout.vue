@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, ref, computed } from 'vue';
 import Sidebar from './Sidebar.vue'
 import Navbar from './Navbar.vue';
 import Spinner from './core/Spinner.vue';
+import Toast from './core/Toast.vue';
 import store from '../store';
 
 const sidebarOpened = ref(true)
@@ -47,6 +48,7 @@ function handleSidebarOpened() {
   <div v-else class="min-h-full bg-gray-200 flex items-center justify-center">
     <Spinner />
   </div>
+  <Toast />
 </template>
 
 
