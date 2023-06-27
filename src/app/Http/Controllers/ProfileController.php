@@ -47,6 +47,7 @@ class ProfileController extends Controller
         } else {
             $billingData['customer_id'] = $customer->user_id;
             $billingData['type'] = AddressType::Billing->value;
+            CustomerAddress::create($billingData);
         }
 
         $request->session()->flash('flash_message', 'プロフィールを更新しました。');

@@ -1,7 +1,12 @@
 <x-app-layout>
     <div class="container lg:w-2/3 xl:w-2/3 mx-auto">
         <h1 class="text-3xl font-bold mb-6">ショッピングカート</h1>
-
+        @if (session('error'))
+            <div class="w-full md:w-[400px] py-2 px-4 pb-4 mb-4 mx-auto bg-red-500 text-white">
+                <p class="font-semibold">{{ session('error') }}</p>
+                <p class="text-right underline text-xs"><a href="{{ route('profile') }}">プロフィール設定に進む→</a></p>
+            </div>
+        @endif
         <div x-data="{
             cartItems: {{ json_encode(
                 $products->map(
@@ -29,7 +34,8 @@
                         <!-- Cart Item -->
                         <template x-for="product of cartItems" :key="product.id">
                             <div>
-                                <div x-data="productItem(product)" class="w-full flex flex-col sm:flex-row items-center gap-4">
+                                <div x-data="productItem(product)"
+                                    class="w-full flex flex-col sm:flex-row items-center gap-4">
                                     <a :href="product.href"
                                         class="w-36 h-32 flex items-center justify-center overflow-hidden">
                                         <img :src="product.image" class="object-cover" alt="" />

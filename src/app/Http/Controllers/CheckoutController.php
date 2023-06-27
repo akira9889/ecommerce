@@ -30,18 +30,25 @@ class CheckoutController extends Controller
         foreach ($products as $product) {
             $quantity = $cartItems[$product->id]['quantity'];
             $totalPrice += $product->price * $quantity;
-            $lineItems[] = [
+            $lineItem = [
                 'price_data' => [
                     'currency' => 'jpy',
                     'unit_amount' => $product->price,
                     'product_data' => [
                         'name' => $product->title,
-                        'description' => $product->description,
-                        'images' => [$product->image],
                     ],
                 ],
                 'quantity' => $quantity,
             ];
+
+            if ($product->image) {
+                $lineItem['price_data']['product_data']['images'] = [$product->image];
+            }
+            if ($product->description) {
+                $lineItem['price_data']['product_data']['description'] = $product->description;
+            }
+
+            array_push($lineItems, $lineItem);
 
             $orderItems[] = [
                 'product_id' => $product->id,
@@ -136,19 +143,25 @@ class CheckoutController extends Controller
     {
         $lineItems = [];
         foreach ($order->items as $item) {
-
-            $lineItems[] = [
+            $lineItem = [
                 'price_data' => [
                     'currency' => 'jpy',
                     'unit_amount' => $item->unit_price,
                     'product_data' => [
                         'name' => $item->product->title,
-                        'description' => $item->product->description,
-                        'images' => [$item->product->image],
                     ],
                 ],
                 'quantity' => $item->quantity,
             ];
+
+            if ($item->product->image) {
+                $lineItem['price_data']['product_data']['images'] = [$item->product->image];
+            }
+            if ($item->product->description) {
+                $lineItem['price_data']['product_data']['description'] = $item->product->description;
+            }
+
+            array_push($lineItems, $lineItem);
         }
 
         $customerId = $this->getOrCreateCustomer($request);
