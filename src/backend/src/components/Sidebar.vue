@@ -30,7 +30,7 @@ import { HomeIcon, UserIcon, ViewListIcon, ChartBarIcon } from '@heroicons/vue/o
         注文一覧
       </span>
     </router-link>
-    <router-link :to="{ name: 'app.dashboard' }"
+    <router-link :to="{ name: 'app.users' }"
       class="flex items-center p-2 rounded transition-colors hover:bg-black/30">
       <span class="mr-2 text-gray-300">
         <UserIcon class="w-5" />
