@@ -57,20 +57,6 @@ function sortOrder(field) {
   getOrders()
 }
 
-function showOrder(order) {
-  emit('clickShow', order);
-}
-
-function deleteOrder(order) {
-  if (!confirm(`本当に削除してもいいですか？`)) {
-    return
-  }
-  store.dispatch('deleteOrder', order.id)
-    .then(res => {
-      //TODO Show notification
-      store.dispatch('getOrders')
-    })
-}
 </script>
 
 <template>

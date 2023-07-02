@@ -10,7 +10,17 @@ const state = {
     from: null,
     to: null,
     page: 1,
-    limit: null,
+    limit: 10,
+    total: 0
+  },
+  users: {
+    loading: false,
+    data: [],
+    links: [],
+    from: null,
+    to: null,
+    page: 1,
+    limit: 10,
     total: 0
   },
   orders: {

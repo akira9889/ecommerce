@@ -3,7 +3,7 @@ import axiosClient from '../axios'
 //////////////////////////////////////////
 ////////////     User     ////////////////
 /////////////////////////////////////////
-export function getUser({ commit }, data) {
+export function getCurrentUser({ commit }, data) {
   return axiosClient.get('/user', data)
     .then(({ data }) => {
       commit('setUser', data)
@@ -28,6 +28,47 @@ export function logout({ commit }) {
     })
 }
 
+//////////////////////////////////////////
+////////////     User     ///////////////
+/////////////////////////////////////////
+export function getUser({ commit }, id) {
+  return axiosClient.get(`/users/${id}`)
+}
+
+export function getUsers({ commit, state }, { url = null, search = '', perPage, sort_field, sort_direction } = {}) {
+  commit('setUsers', [true])
+  url = url || '/users'
+  const params = {
+    per_page: state.users.limit
+  }
+  return axiosClient.get(url, {
+    params: {
+      ...params,
+      search,
+      per_page: perPage,
+      sort_field,
+      sort_direction
+    }
+  })
+    .then(response => {
+      commit('setUsers', [false, response.data])
+    })
+    .catch(() => {
+      commit('setUsers', [false])
+    })
+}
+
+export function createUser({ commit }, user) {
+  return axiosClient.post('/users', user)
+}
+
+export function updateUser({ commit }, user) {
+  return axiosClient.put(`/users/${user.id}`, user)
+}
+
+export function deleteUser({ commit }, id) {
+  return axiosClient.delete(`/users/${id}`)
+}
 //////////////////////////////////////////
 //////////     Product     //////////////
 /////////////////////////////////////////
