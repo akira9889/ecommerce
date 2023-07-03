@@ -18,6 +18,7 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  min: Number,
   errorMsg: Object
 })
 
@@ -97,6 +98,7 @@ const emit = defineEmits(['update:modelValue', 'change'])
                  @input="emit('update:modelValue', $event.target.value)"
                  :class="inputClasses"
                  :placeholder="label"
+                 :min="min"
                  step="1"/>
         </template>
         <span v-if="append"

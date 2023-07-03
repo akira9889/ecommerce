@@ -21,6 +21,8 @@ const product = ref({
 
 const loading = ref(false)
 
+let errorMsg = ref({})
+
 const props = defineProps({
   modelValue: Boolean,
   product: {
@@ -48,6 +50,7 @@ onUpdated(() => {
 
 function closeModal() {
   show.value = false
+  errorMsg.value = {}
   emit('close')
 }
 
@@ -63,6 +66,10 @@ function onSubmit() {
           closeModal()
         }
       })
+      .catch(({ response }) => {
+        loading.value = false;
+        errorMsg.value = response.data.errors
+      })
   } else {
     store.dispatch('createProduct', product.value)
       .then(response => {
@@ -72,6 +79,10 @@ function onSubmit() {
           store.dispatch('getProducts')
           closeModal()
         }
+      })
+      .catch(({ response }) => {
+        loading.value = false;
+        errorMsg.value = response.data.errors
       })
   }
 }
@@ -109,10 +120,10 @@ function onSubmit() {
               </header>
               <form @submit.prevent="onSubmit">
                 <div class="bg-white px-4 pt-5 pb-4">
-                  <CustomInput class="mb-4" v-model="product.title" label="商品名" />
-                  <CustomInput type="file" class="mb-4" label="商品画像" @change="file => product.image = file" />
-                  <CustomInput type="textarea" class="mb-4" v-model="product.description" label="説明" />
-                  <CustomInput type="number" class="mb-4" v-model="product.price" label="値段" append="円" />
+                  <CustomInput class="mb-4" v-model="product.title" label="商品名" :errorMsg="errorMsg.title" />
+                  <CustomInput type="file" class="mb-4" label="商品画像" @change="file => product.image = file" :errorMsg="errorMsg.image" />
+                  <CustomInput type="textarea" class="mb-4" v-model="product.description" label="説明" :errorMsg="errorMsg.description" />
+                  <CustomInput type="number" class="mb-4" v-model="product.price" label="値段" append="円" min="1" :errorMsg="errorMsg.price" />
                 </div>
                 <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button type="submit"

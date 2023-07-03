@@ -166,6 +166,9 @@ return [
         'password' => 'パスワード',
         'new_password' => '新しいパスワード',
         'quantity' => '数量',
+        'price' => '価格',
+        'description' => '説明',
+        'image' => '画像'
     ],
 
 ];

@@ -30,4 +30,11 @@ class ProductRequest extends FormRequest
             'price' => ['required', 'integer', 'min:0']
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'title' => '商品名',
+        ];
+    }
 }
