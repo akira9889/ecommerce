@@ -19,7 +19,13 @@ const props = defineProps({
     default: ''
   },
   min: Number,
+  selectOptions: Array,
   errorMsg: Object
+})
+
+const id = computed(() => {
+  if (props.id) return props.id;
+  return `id-${Math.floor(1000000 + Math.random() * 1000000)}`;
 })
 
 const inputValue = ref(props.modelValue);
@@ -80,15 +86,29 @@ const emit = defineEmits(['update:modelValue', 'change'])
                  :class="inputClasses"
                  :placeholder="label"/>
         </template>
-        <template v-else-if="['password', 'password_confirmation'].includes(type)">
-          <input :type="type"
-                 :name="name"
-                 :required="required"
-                 :value="inputValue"
-                 @input="emit('update:modelValue', $event.target.value)"
-                 :class="inputClasses"
-                 :placeholder="label"
-                 step="1"/>
+        <template v-else-if="type === 'select'">
+            <select :type="type"
+                   :name="name"
+                   :required="required"
+                   :value="inputValue"
+                   @change="emit('update:modelValue', $event.target.value)"
+                   :class="inputClasses"
+                   :placeholder="label"
+                   step="1">
+              <option value="">{{ label }}</option>
+              <option v-for="option of selectOptions" :value="option.key" :key="option.key">{{ option.text }}</option>
+            </select>
+        </template>
+        <template v-else-if="type === 'checkbox'">
+          <div class="flex items-center">
+            <input :id="id" :type="type"
+            :name="name"
+            :required="required"
+            :checked="inputValue"
+            @change="emit('update:modelValue', $event.target.checked)"
+            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+            <label :for="id" class="block text-sm text-gray-9000 ml-3"> {{ label }}</label>
+          </div>
         </template>
         <template v-else>
           <input :type="type"
