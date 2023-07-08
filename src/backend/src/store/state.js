@@ -3,6 +3,7 @@ const state = {
     token: sessionStorage.getItem('TOKEN'),
     data: {}
   },
+  countries: [],
   products: {
     loading: false,
     data: [],
@@ -14,6 +15,16 @@ const state = {
     total: 0
   },
   users: {
+    loading: false,
+    data: [],
+    links: [],
+    from: null,
+    to: null,
+    page: 1,
+    limit: 10,
+    total: 0
+  },
+  customers: {
     loading: false,
     data: [],
     links: [],

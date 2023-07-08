@@ -1,7 +1,7 @@
 import axiosClient from '../axios'
 
 //////////////////////////////////////////
-////////////     User     ////////////////
+////////     Application     ////////////
 /////////////////////////////////////////
 export function getCurrentUser({ commit }, data) {
   return axiosClient.get('/user', data)
@@ -28,13 +28,15 @@ export function logout({ commit }) {
     })
 }
 
+export function getCountries({ commit }) {
+  axiosClient.get('countries')
+    .then(({ data }) => {
+      commit('setCountries', data)
+    })
+}
 //////////////////////////////////////////
 ////////////     User     ///////////////
 /////////////////////////////////////////
-export function getUser({ commit }, id) {
-  return axiosClient.get(`/users/${id}`)
-}
-
 export function getUsers({ commit, state }, { url = null, search = '', perPage, sort_field, sort_direction } = {}) {
   commit('setUsers', [true])
   url = url || '/users'
@@ -69,6 +71,44 @@ export function updateUser({ commit }, user) {
 export function deleteUser({ commit }, id) {
   return axiosClient.delete(`/users/${id}`)
 }
+
+//////////////////////////////////////////
+////////////     Customer     ///////////////
+/////////////////////////////////////////
+export async function getCustomers({ commit, state }, { url = null, search = '', per_page, sort_field, sort_direction } = {}) {
+  commit('setCustomers', [true])
+  url = url || '/customers'
+  const params = {
+    per_page: state.customers.limit
+  }
+  try {
+    const response = await axiosClient.get(url, {
+      params: {
+        ...params,
+        search,
+        per_page,
+        sort_field,
+        sort_direction
+      }
+    })
+    commit('setCustomers', [false, response.data])
+  } catch {
+    commit('setCustomers', [false])
+  }
+}
+
+export function getCustomer({ commit }, id) {
+  return axiosClient.get(`/customers/${id}`)
+}
+
+export function updateCustomer({ commit }, customer) {
+  return axiosClient.put(`/customers/${customer.id}`, customer)
+}
+
+export function deleteCustomer({ commit }, id) {
+  return axiosClient.delete(`/customers/${id}`)
+}
+
 //////////////////////////////////////////
 //////////     Product     //////////////
 /////////////////////////////////////////
