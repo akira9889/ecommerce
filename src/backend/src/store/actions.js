@@ -64,8 +64,14 @@ export function createUser({ commit }, user) {
   return axiosClient.post('/users', user)
 }
 
-export function updateUser({ commit }, user) {
+export function updateUser({ commit, state }, user) {
   return axiosClient.put(`/users/${user.id}`, user)
+    .then((response) => {
+      if (response.data.id === state.user.data.id) {
+        commit('setUser', response.data)
+      }
+      return response
+    })
 }
 
 export function deleteUser({ commit }, id) {
