@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Log;
 
 class OrderResource extends JsonResource
 {
@@ -16,7 +15,6 @@ class OrderResource extends JsonResource
      */
     public function toArray($request)
     {
-        Log::debug($this->user->id);
         $customer = $this->user->customer;
         $shipping = $this->user->customer->shippingAddress;
         $billing = $this->user->customer->billingAddress;
