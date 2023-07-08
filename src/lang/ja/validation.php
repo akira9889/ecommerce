@@ -162,6 +162,10 @@ return [
 
     'attributes' => [
         'name' => '名前',
+        'last_name' => '姓',
+        'first_name' => '名',
+        'last_kana' => 'セイ',
+        'first_kana' => 'メイ',
         'email' => 'メールアドレス',
         'password' => 'パスワード',
         'new_password' => '新しいパスワード',
