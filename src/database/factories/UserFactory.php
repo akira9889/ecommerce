@@ -41,6 +41,8 @@ class UserFactory extends Factory
             $customer->user_id = $user->id;
             $customer->last_name = $katakanaLastName;
             $customer->first_name = $katakanaFirstName;
+            $customer->phone = str_replace('-', '', $this->faker->phoneNumber);
+            $customer->status = 'active';
             $customer->save();
         });
     }
