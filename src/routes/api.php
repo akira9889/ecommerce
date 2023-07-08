@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,8 @@ Route::middleware('auth:sanctum', 'admin')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('products', ProductController::class);
     Route::apiResource('users', UserController::class);
+    Route::apiResource('customers', CustomerController::class);
+    Route::get('/countries', [CustomerController::class, 'countries']);
     Route::get('orders', [OrderController::class, 'index']);
     Route::get('orders/statuses', [OrderController::class, 'getStatuses']);
     Route::get('orders/{order}', [OrderController::class, 'view']);

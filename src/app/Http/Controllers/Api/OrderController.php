@@ -9,7 +9,6 @@ use App\Models\Order;
 use App\Http\Resources\OrderListResource;
 use App\Http\Resources\OrderResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -31,7 +30,6 @@ class OrderController extends Controller
 
     public function view(Order $order)
     {
-        Log::debug(json_encode(new OrderResource($order)));
         return new OrderResource($order);
     }
 

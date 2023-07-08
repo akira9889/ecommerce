@@ -102,7 +102,7 @@ function onSubmit() {
             enter-to="opacity-100 scale-100" leave="duration-200 ease-in" leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-0">
             <DialogPanel
-              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
+              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all z-50">
               <Spinner v-if="loading"
                 class="absolute top-0 right-0 bottom-0 left-0 bg-white flex items-center justify-center" />
               <header class="py-3 px-4 flex justify-between items-center">

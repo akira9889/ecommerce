@@ -15,7 +15,7 @@ onMounted(() => {
         .then(({ data }) => {
             order.value = data
         })
-        
+
     axiosClient.get('/orders/statuses')
         .then(({ data }) => {
             orderStatuses.value = data
@@ -51,9 +51,6 @@ function onStatusChange() {
                 <tr>
                     <td class="font-bold">注文状況</td>
                     <td>
-                        <!-- <span class="text-white p-1 rounded"
-                            :class="order.status === 'paid' ? 'bg-emerald-500' : 'bg-gray-400'">{{ order.status === 'paid' ?
-                                '支払い済み' : '未払い' }}</span> -->
                         <select v-model="order.status" @change="onStatusChange">
                             <option v-for="(status, key) in orderStatuses" :value="key" :key="key">{{ status }}</option>
                         </select>

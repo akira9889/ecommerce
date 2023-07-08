@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Api\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -26,9 +25,12 @@ class UserController extends Controller
 
         $users = User::query()
         ->leftJoin('customers', 'users.id', '=', 'customers.user_id')
-        ->where('email', $search)
-        ->orWhere('phone', $search)
-        ->orWhereRaw("CONCAT(customers.last_name, customers.first_name ) LIKE ?", ["%{$search}%"]);
+        ->where('users.is_admin', true)
+        ->where(function ($query) use ($search) {
+            $query->where('email', $search)
+                ->orWhere('phone', $search)
+                ->orWhereRaw("CONCAT(customers.last_name, customers.first_name ) LIKE ?", ["%{$search}%"]);
+        });
 
         if ($sortField === 'name') {
             $users = $users->orderByRaw("CONCAT(customers.last_name, customers.first_name) {$sortDirection}");
