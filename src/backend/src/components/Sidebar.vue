@@ -27,7 +27,7 @@ import { HomeIcon, UserIcon, ViewListIcon, ChartBarIcon, UserGroupIcon } from '@
         <ChartBarIcon class="w-5" />
       </span>
       <span class="text-xs">
-        注文一覧
+        注文
       </span>
     </router-link>
     <router-link :to="{ name: 'app.users' }"
@@ -36,7 +36,7 @@ import { HomeIcon, UserIcon, ViewListIcon, ChartBarIcon, UserGroupIcon } from '@
         <UserIcon class="w-5" />
       </span>
       <span class="text-xs">
-        ユーザー
+        管理者
       </span>
     </router-link>
     <router-link :to="{ name: 'app.customers' }"
