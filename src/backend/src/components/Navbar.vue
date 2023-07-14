@@ -28,7 +28,7 @@ function logout() {
     <Menu as="div" class="relative inline-block text-left">
       <MenuButton class="flex items-center">
         <img src="https://randomuser.me/api/portraits/men/12.jpg" class="rounded-full w-8 mr-2">
-        <small>{{ currentUser.name }}</small>
+        <small>{{ currentUser.last_name }} {{ currentUser.first_name }}</small>
         <ChevronDownIcon class="h-5 text-indigo-200 hover:text-indigo-100" aria-hidden="true" />
       </MenuButton>
       <transition

@@ -84,7 +84,7 @@ function sortOrder(field) {
           <TableHeaderCell @click="sortOrder" field="id" :sort-field="sortField" :sort-direction="sortDirection">
             ID
           </TableHeaderCell>
-          <TableHeaderCell :sort-field="sortField" :sort-direction="sortDirection">
+          <TableHeaderCell @click="sortOrder" field="name" :sort-field="sortField" :sort-direction="sortDirection">
             顧客
           </TableHeaderCell>
           <TableHeaderCell @click="sortOrder" field="status" :sort-field="sortField" :sort-direction="sortDirection">

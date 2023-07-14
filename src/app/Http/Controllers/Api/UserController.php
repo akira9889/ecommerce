@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\ProfileType;
+use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Http\Response;
 use App\Http\Resources\UserResource;
-use App\Models\Api\User;
+use App\Models\Profile;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -24,18 +29,30 @@ class UserController extends Controller
         $sortDirection = request('sort_direction', 'desc');
 
         $users = User::query()
-        ->leftJoin('customers', 'users.id', '=', 'customers.user_id')
-        ->where('users.is_admin', true)
-        ->where(function ($query) use ($search) {
-            $query->where('email', $search)
-                ->orWhere('phone', $search)
-                ->orWhereRaw("CONCAT(customers.last_name, customers.first_name ) LIKE ?", ["%{$search}%"]);
-        });
+            ->with('adminProfile')
+            ->where('is_admin', true);
+
+        if ($search) {
+            $users->whereHas('adminProfile', function ($query) use ($search) {
+                $query->whereRaw("CONCAT(last_kana, first_kana) LIKE ?", ["%{$search}%"]);
+            });
+        }
+
 
         if ($sortField === 'name') {
-            $users = $users->orderByRaw("CONCAT(customers.last_name, customers.first_name) {$sortDirection}");
+            $users = $users->addSelect(['sort_name' => Profile::selectRaw("CONCAT(last_kana, first_kana)")
+                ->whereColumn('users.id', 'profiles.user_id')
+                ->where('type', 'admin')
+                ->limit(1)])
+                ->orderBy('sort_name', $sortDirection);
+        } elseif ($sortField === 'updated_at') {
+            $users = $users->addSelect(['profile_updated_at' => Profile::select("updated_at")
+                ->whereColumn('users.id', 'profiles.user_id')
+                ->where('type', 'admin')
+                ->limit(1)])
+                ->orderBy('profile_updated_at', $sortDirection);
         } else {
-            $users = $users->orderBy("users.{$sortField}", $sortDirection);
+            $users = $users->orderBy($sortField, $sortDirection);
         }
 
         $users = $users->paginate($perPage);
@@ -53,13 +70,43 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         $data = $request->validated();
-        $data['is_admin'] = true;
-        $data['email_verified_at'] = date('Y-m-d H:i:s');
-        $data['password'] = Hash::make($data['password']);
 
-        $user = User::create($data);
+        DB::beginTransaction();
 
-        return new UserResource($user);
+        try {
+            $userData = [];
+            $userData['email'] = $data['email'];
+            $userData['email_verified_at'] = date('Y-m-d H:i:s');
+            $userData['password'] = Hash::make($data['password']);
+            $userData['status'] = UserStatus::Active->value;
+            $userData['is_admin'] = true;
+
+            $user = User::create($userData);
+            unset($data['email']);
+            unset($data['password']);
+
+            $data['user_id'] = $user->id;
+            $data['type'] = ProfileType::Admin->value;
+
+            Profile::create($data);
+            $data['type'] = ProfileType::Customer->value;
+            Profile::create($data);
+
+            DB::commit();
+
+            return new UserResource($user);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json(
+                [
+                    'errors' => [
+                        'network' => 'データの通信に失敗しました'
+                    ]
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
     }
 
     /**
@@ -73,12 +120,20 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        }
-        $data['updated_by'] = $request->user()->id;
+        $profileData = [];
+        $profileData['first_name'] = $data['first_name'];
+        $profileData['last_name'] = $data['last_name'];
+        $profileData['first_kana'] = $data['first_kana'];
+        $profileData['last_kana'] = $data['last_kana'];
 
-        $user->update($data);
+        $user->adminProfile->update($profileData);
+
+        $userData['email'] = $data['email'];
+        if (!empty($data['password'])) {
+            $userData['password'] = Hash::make($data['password']);
+        }
+
+        $user->update($userData);
 
         return new UserResource($user);
     }

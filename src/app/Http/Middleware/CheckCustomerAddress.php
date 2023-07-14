@@ -17,8 +17,8 @@ class CheckCustomerAddress
     public function handle($request, Closure $next)
     {
         $user = $request->user();
-        $shipping = $user->customer->shippingAddress;
-        $billing = $user->customer->billingAddress;
+        $shipping = $user->profile->shippingAddress;
+        $billing = $user->profile->billingAddress;
 
         if (!$shipping || !$billing) {
             session()->flash('error', 'プロフィールから配達先、請求先住所を設定してください。');

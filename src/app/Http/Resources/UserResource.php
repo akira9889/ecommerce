@@ -20,9 +20,12 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'first_name' => $this->adminProfile->first_name,
+            'last_name' => $this->adminProfile->last_name,
+            'first_kana' => $this->adminProfile->first_kana,
+            'last_kana' => $this->adminProfile->last_kana,
             'email' => $this->email,
-            'created_at' => (new DateTime($this->created_at))->format('Y-m-d H:i:s'),
+            'updated_at' => (new DateTime($this->adminProfile->updated_at))->format('Y-m-d H:i:s'),
         ];
     }
 }

@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enums\AddressType;
-use App\Enums\CustomerStatus;
+use App\Enums\ProfileType;
+use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerRequest;
 use App\Http\Resources\CountryResource;
 use App\Http\Resources\CustomerListResource;
 use App\Http\Resources\CustomerResource;
 use App\Models\Country;
-use App\Models\Customer;
-use App\Models\CustomerAddress;
+use App\Models\Api\User;
+use App\Models\ProfileAddress;
 
 class CustomerController extends Controller
 {
@@ -27,20 +28,35 @@ class CustomerController extends Controller
         $sortField = request('sort_field', 'updated_at');
         $sortDirection = request('sort_direction', 'desc');
 
-        $customers = Customer::query()->leftJoin('users', 'customers.user_id', '=', 'users.id');
+        $customers = User::query()
+            ->join('profiles', 'profiles.user_id', '=', 'users.id')
+            ->select(
+                'users.id',
+                'users.email',
+                'users.status',
+                "profiles.first_name",
+                "profiles.last_name",
+                "profiles.first_kana",
+                "profiles.last_kana",
+                "profiles.phone",
+                "profiles.updated_at",
+            )
+            ->where('profiles.type', ProfileType::Customer);
 
         if ($search) {
-            $customers->where('users.email', $search)
-                ->orWhere('customers.phone', $search)
-                ->orWhereRaw("CONCAT(customers.last_name, customers.first_name ) LIKE ?", ["%{$search}%"]);
+            $customers->where(function ($query) use ($search) {
+                $query->where('users.email', 'like', "%{$search}%")
+                    ->orWhere('profiles.phone', 'like', "%{$search}%")
+                    ->orWhereRaw("CONCAT(profiles.last_kana, profiles.first_kana) LIKE ?", ["%{$search}%"]);
+            });
         }
 
         if ($sortField === 'name') {
-            $customers = $customers->orderByRaw("CONCAT(last_name, first_name) {$sortDirection}");
+            $customers = $customers->orderByRaw("CONCAT(profiles.last_kana, profiles.first_kana) {$sortDirection}");
         } elseif ($sortField === 'email') {
             $customers->orderBy("users.$sortField", $sortDirection);
         } else {
-            $customers = $customers->orderBy("customers.$sortField", $sortDirection);
+            $customers = $customers->orderBy("profiles.$sortField", $sortDirection);
         }
 
         $customers = $customers->paginate($perPage);
@@ -48,15 +64,10 @@ class CustomerController extends Controller
         return CustomerListResource::collection($customers);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Customer $customer)
+    public function show($id)
     {
-        return new CustomerResource($customer);
+        $user = User::findOrFail($id);
+        return new CustomerResource($user);
     }
 
     /**
@@ -66,29 +77,39 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function update(CustomerRequest $request, Customer $customer)
+    public function update(CustomerRequest $request, $id)
     {
         $customerData = $request->validated();
+
         $customerData['updated_by'] = $request->user()->id;
-        $customerData['status'] = $customerData['status'] ? CustomerStatus::Active->value : CustomerStatus::Disabled->value;
+        $customerData['status'] = $customerData['status'] ? UserStatus::Active->value : UserStatus::Disabled->value;
+
         $shippingData = $customerData['shippingAddress'];
         $billingData = $customerData['billingAddress'];
 
-        $customer->update($customerData);
+        $customer = User::findOrFail($id);
 
-        if ($customer->shippingAddress) {
-            $customer->shippingAddress->update($shippingData);
+        $customer->status = $customerData['status'];
+        $customer->email = $customerData['email'];
+        unset($customerData['status']);
+        $customer->save();
+
+        $customerProfile = $customer->profile;
+        $customerProfile->update($customerData);
+
+        if ($customerProfile->shippingAddress) {
+            $customerProfile->shippingAddress->update($shippingData);
         } else {
-            $shippingData['customer_id'] = $customer->user_id;
+            $shippingData['profile_id'] = $customerProfile->id;
             $shippingData['type'] = AddressType::Shipping->value;
-            CustomerAddress::create($shippingData);
+            ProfileAddress::create($shippingData);
         }
-        if ($customer->billingAddress) {
-            $customer->billingAddress->update($billingData);
+        if ($customerProfile->billingAddress) {
+            $customerProfile->billingAddress->update($billingData);
         } else {
-            $billingData['customer_id'] = $customer->user_id;
+            $billingData['profile_id'] = $customerProfile->id;
             $billingData['type'] = AddressType::Billing->value;
-            CustomerAddress::create($billingData);
+            ProfileAddress::create($billingData);
         }
 
         return new CustomerResource($customer);
@@ -100,8 +121,9 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+    public function destroy($id)
     {
+        $customer = User::findOrFail($id);
         $customer->delete();
 
         return response()->noContent();

@@ -123,7 +123,7 @@ function deleteCustomer(customer) {
           </TableHeaderCell>
           <TableHeaderCell @click="sortCustomer" field="updated_at" :sort-field="sortField"
             :sort-direction="sortDirection">
-            登録日
+            更新日
           </TableHeaderCell>
           <TableHeaderCell field="actions">
             変更
@@ -141,7 +141,7 @@ function deleteCustomer(customer) {
             customer.email }}</td>
           <td class="border-b p-2">{{ customer.phone }}</td>
           <td class="border-b p-2">{{ customer.status ? 'アクティヴ' : '非アクティブ' }}</td>
-          <td class="border-b p-2">{{ customer.created_at }}</td>
+          <td class="border-b p-2">{{ customer.updated_at }}</td>
           <td class="border-b p-2">
             <Menu as="div" class="relative inline-block text-left">
               <div>

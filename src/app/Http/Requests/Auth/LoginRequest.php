@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Enums\CustomerStatus;
+use App\Enums\UserStatus;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -51,8 +51,7 @@ class LoginRequest extends FormRequest
         }
 
         $user = $this->user();
-        $customer = $user->customer;
-        if ($customer->status !== CustomerStatus::Active->value) {
+        if ($user->status !== UserStatus::Active->value) {
             Auth::guard('web')->logout();
             $this->session()->invalidate();
             $this->session()->regenerateToken();

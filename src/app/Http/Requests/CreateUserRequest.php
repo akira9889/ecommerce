@@ -25,9 +25,20 @@ class CreateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:55'],
+            'first_name' => ['required', 'max:55'],
+            'last_name' => ['required', 'max:55'],
+            'first_kana' => ['required', 'max:55', 'regex:/\A[ァ-ヶー]+\z/u'],
+            'last_kana' => ['required', 'max:55', 'regex:/\A[ァ-ヶー]+\z/u'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'confirmed', Password::min(8)->numbers()->letters()->symbols()]
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'first_kana.regex' => 'カタカナで入力してください',
+            'last_kana.regex' => 'カタカナで入力してください',
         ];
     }
 }
