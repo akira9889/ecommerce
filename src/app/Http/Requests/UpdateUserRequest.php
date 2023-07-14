@@ -25,7 +25,10 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:55'],
+            'first_name' => ['required', 'max:55'],
+            'last_name' => ['required', 'max:55'],
+            'first_kana' => ['required', 'max:55', 'regex:/\A[ァ-ヶー]+\z/u'],
+            'last_kana' => ['required', 'max:55', 'regex:/\A[ァ-ヶー]+\z/u'],
             'email' => ['required', 'email'],
             'password' => ['nullable', 'confirmed', Password::min(8)->numbers()->letters()->symbols()],
         ];

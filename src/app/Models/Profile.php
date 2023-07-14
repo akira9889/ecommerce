@@ -7,13 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Customer extends Model
+class Profile extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'user_id';
-
-    protected $fillable =  ['first_name', 'last_name', 'phone', 'status'];
+    protected $fillable =  ['user_id', 'first_name', 'last_name', 'first_kana', 'last_kana', 'phone', 'type'];
 
     public function user()
     {
@@ -22,7 +20,7 @@ class Customer extends Model
 
     private function _getAddresses(): HasOne
     {
-        return $this->hasOne(CustomerAddress::class, 'customer_id', 'user_id');
+        return $this->hasOne(ProfileAddress::class);
     }
 
     public function shippingAddress(): HasOne

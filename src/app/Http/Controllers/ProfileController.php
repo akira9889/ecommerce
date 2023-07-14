@@ -6,7 +6,7 @@ use App\Enums\AddressType;
 use App\Http\Requests\PasswordUpdateRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\Country;
-use App\Models\CustomerAddress;
+use App\Models\ProfileAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,39 +15,39 @@ class ProfileController extends Controller
     public function view(Request $request)
     {
         $user = $request->user();
-        $customer = $user->customer;
-        $shippingAddress = $customer->shippingAddress ?: new CustomerAddress(['type' => AddressType::Shipping->value]);
-        $billingAddress = $customer->billingAddress ?: new CustomerAddress(['type' => AddressType::Billing->value]);
+        $profile = $user->profile;
+        $shippingAddress = $profile->shippingAddress ?: new ProfileAddress(['type' => AddressType::Shipping->value]);
+        $billingAddress = $profile->billingAddress ?: new ProfileAddress(['type' => AddressType::Billing->value]);
 
         $countries = Country::query()->orderBy('name')->get();
-        return view('profile.view', compact('customer', 'user', 'shippingAddress', 'billingAddress', 'countries'));
+        return view('profile.view', compact('profile', 'user', 'shippingAddress', 'billingAddress', 'countries'));
     }
 
     public function store(ProfileRequest $request)
     {
-        $customerData = $request->validated();
+        $profileData = $request->validated();
 
-        $shippingData = $customerData['shipping'];
-        $billingData = $customerData['billing'];
+        $shippingData = $profileData['shipping'];
+        $billingData = $profileData['billing'];
 
         $user = $request->user();
 
-        $customer = $user->customer;
-        $customer->update($customerData);
+        $profile = $user->profile;
+        $profile->update($profileData);
 
-        if ($customer->shippingAddress) {
-            $customer->shippingAddress->update($shippingData);
+        if ($profile->shippingAddress) {
+            $profile->shippingAddress->update($shippingData);
         } else {
-            $shippingData['customer_id'] = $customer->user_id;
+            $shippingData['profile_id'] = $profile->id;
             $shippingData['type'] = AddressType::Shipping->value;
-            CustomerAddress::create($shippingData);
+            ProfileAddress::create($shippingData);
         }
-        if ($customer->billingAddress) {
-            $customer->billingAddress->update($billingData);
+        if ($profile->billingAddress) {
+            $profile->billingAddress->update($billingData);
         } else {
-            $billingData['customer_id'] = $customer->user_id;
+            $billingData['profile_id'] = $profile->id;
             $billingData['type'] = AddressType::Billing->value;
-            CustomerAddress::create($billingData);
+            ProfileAddress::create($billingData);
         }
 
         $request->session()->flash('flash_message', 'プロフィールを更新しました。');

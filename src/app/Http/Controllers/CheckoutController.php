@@ -237,8 +237,8 @@ class CheckoutController extends Controller
     public function getOrCreateCustomer(Request $request)
     {
         $user = $request->user();
-        $firstName = $user->customer->first_name;
-        $lastName = $user->customer->last_name;
+        $firstName = $user->profile->first_name;
+        $lastName = $user->profile->last_name;
         $name = $lastName . ' ' . $firstName;
         $email = $user->email;
 

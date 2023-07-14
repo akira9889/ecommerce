@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class CustomerAddress extends Model
+class ProfileAddress extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type', 'address1', 'address2', 'city', 'state', 'zipcode', 'country_code', 'customer_id'];
+    protected $fillable = ['type', 'address1', 'address2', 'city', 'state', 'zipcode', 'country_code', 'profile_id'];
 
-    public function customer(): BelongsTo
+    public function profile(): BelongsTo
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Profile::class);
     }
 
     public function country(): BelongsTo

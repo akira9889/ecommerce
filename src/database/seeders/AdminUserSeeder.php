@@ -16,27 +16,26 @@ class AdminUserSeeder extends Seeder
     {
         $users = [
             [
-                'name' => 'Admin',
                 'email' => 'admin@example.com',
                 'password' => bcrypt('admin123'),
                 'is_admin' => true
             ],
             [
-                'name' => '岩澤 明',
                 'email' => 'aki_badmin89@icloud.com',
                 'password' => bcrypt('password'),
+                'is_admin' => true
             ],
         ];
 
         foreach ($users as $userData) {
             User::factory()
-            ->withCustomer()
+            ->withProfile()
             ->create($userData);
         }
 
         // ランダムなユーザーを10人作成
         User::factory()
-        ->withCustomer()
+        ->withProfile()
         ->count(100)
         ->create();
     }

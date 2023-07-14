@@ -8,6 +8,8 @@ const DEFAULT_CUSTOMER = {
     id: '',
     first_name: '',
     last_name: '',
+    first_kana: '',
+    last_kana: '',
     email: '',
     phone: '',
     status: false,

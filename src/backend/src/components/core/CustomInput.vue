@@ -36,14 +36,8 @@ watchEffect(() => {
 
 const inputClasses = computed(() => {
   const cls = [
-    `block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:rin-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`
+    `block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:rin-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm w-full`
   ]
-
-  if (props.type === 'number') {
-    cls.push('w-1/2')
-  } else {
-    cls.push('w-full')
-  }
 
   if (props.append && !props.prepend) {
     cls.push(`rounded-l-md`)
@@ -57,14 +51,13 @@ const inputClasses = computed(() => {
 })
 
 const emit = defineEmits(['update:modelValue', 'change'])
-
 </script>
 
 <template>
-  <div>
-      <label class="sr-only">{{ label }}</label>
-      <p v-if="errorMsg" class="text-red-500 text-sm">{{ errorMsg[0] }}</p>
-      <div class="mt-1 flex rounded-md shadow-sm">
+  <div class="mt-2">
+      <p v-if="errorMsg" class="text-red-500 text-sm leading-4">{{ errorMsg[0]}}</p>
+      <div class="flex rounded-md shadow-sm relative mt-5">
+        <label v-if="inputValue" :class="[inputValue ? 'block' : 'hidden', 'absolute text-xs leading-4 text-gray-900 top-0 left-0 -translate-y-[110%]']">{{ label }}</label>
         <span v-if="prepend"
               class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-200 text-gray-500 text-sm">
           {{ prepend }}
@@ -111,16 +104,20 @@ const emit = defineEmits(['update:modelValue', 'change'])
           </div>
         </template>
         <template v-else>
-          <input :type="type"
-                 :name="name"
-                 :required="required"
-                 :value="inputValue"
-                 @input="emit('update:modelValue', $event.target.value)"
-                 :class="inputClasses"
-                 :placeholder="label"
-                 :min="min"
-                 step="1"/>
-        </template>
+          <div :class="[type === 'number' ? 'w-1/2' : 'w-full', 'relative']">
+            <input :type="type"
+                  :name="name"
+                  :required="required"
+                  :value="inputValue"
+                  @input="emit('update:modelValue', $event.target.value)"
+                  :class="inputClasses"
+                  :min="min"
+                  step="1"
+                  :placeholder="label"
+                  autocomplete
+            />
+        </div>
+      </template>
         <span v-if="append"
               class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-200 text-gray-500 text-sm">
           {{ append }}

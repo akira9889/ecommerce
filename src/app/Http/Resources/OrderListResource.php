@@ -21,8 +21,8 @@ class OrderListResource extends JsonResource
             'number_of_items' => $this->items()->count(),
             'customer' => [
                 'id' => $this->user->id,
-                'first_name' => $this->user->customer->first_name,
-                'last_name' => $this->user->customer->last_name,
+                'first_name' => $this->user->profile->first_name,
+                'last_name' => $this->user->profile->last_name,
             ],
             'created_at' => (new \DateTime($this->created_at))->format('Y-m-d H:i:s'),
             'updated_at' => (new \DateTime($this->updated_at))->format('Y-m-d H:i:s'),

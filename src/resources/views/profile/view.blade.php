@@ -46,10 +46,10 @@
                     <h2 class="text-xl font-semibold mb-2">プロフィール設定</h2>
                     <div class="grid grid-cols-2 gap-3 mb-3">
                         <x-text-input type="text" name="last_name"
-                            value="{{ old('last_name', $customer->last_name) }}" placeholder="姓"
+                            value="{{ old('last_name', $profile->last_name) }}" placeholder="姓"
                             class="w-full focus:border-purple-600 focus:ring-purple-600 border-gray-300 rounded" />
                         <x-text-input type="text" name="first_name"
-                            value="{{ old('first_name', $customer->first_name) }}" placeholder="名"
+                            value="{{ old('first_name', $profile->first_name) }}" placeholder="名"
                             class="w-full focus:border-purple-600 focus:ring-purple-600 border-gray-300 rounded" />
                     </div>
                     <div class="mb-3">
@@ -58,7 +58,7 @@
                             class="w-full focus:border-purple-600 focus:ring-purple-600 border-gray-300 rounded" />
                     </div>
                     <div class="mb-3">
-                        <x-text-input type="text" name="phone" value="{{ old('phone', $customer->phone) }}"
+                        <x-text-input type="text" name="phone" value="{{ old('phone', $profile->phone) }}"
                             placeholder="電話番号"
                             class="w-full focus:border-purple-600 focus:ring-purple-600 border-gray-300 rounded" />
                     </div>

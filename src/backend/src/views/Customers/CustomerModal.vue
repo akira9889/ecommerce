@@ -27,7 +27,10 @@ const customer = ref({
 
 const countries = computed(() => store.state.countries.map(c => ({ key: c.code, text: c.name })))
 
-const billingCountry = computed(() => store.state.countries.find(c => c.code === customer.value.billingAddress.country_code))
+const billingCountry = computed(() => store.state.countries.find(c => {
+  // if (customer.value.billingAddress.country_code) return
+  return c.code === customer.value.billingAddress.country_code
+}))
 const billingStateOptions = computed(() => {
   if (!billingCountry.value || !billingCountry.value.states) return []
   return Object.entries(billingCountry.value.states).map(c => ({ key: c[0], text: c[1] }))
@@ -56,13 +59,13 @@ function closeModal() {
   emit('close');
 }
 
-watch(() => customer.value.billingAddress.country_code, (newCountryCode, oldCountryCode) => {
+watch(() => customer.value.billingAddress.country_code, () => {
   if (!billingCountry.value || !billingCountry.value.states.hasOwnProperty(customer.value.billingAddress.state)) {
     customer.value.billingAddress.state = '';
   }
 });
 
-watch(() => customer.value.shippingAddress.country_code, (newCountryCode, oldCountryCode) => {
+watch(() => customer.value.shippingAddress.country_code, () => {
   if (!shippingCountry.value || !shippingCountry.value.states.hasOwnProperty(customer.value.shippingAddress.state)) {
     customer.value.shippingAddress.state = '';
   }
@@ -104,18 +107,7 @@ watch(() => customer.value.shippingAddress.zipcode, (newZipcode) => {
 
 onUpdated(() => {
   customer.value = {
-    id: props.customer.id,
-    first_name: props.customer.first_name,
-    last_name: props.customer.last_name,
-    email: props.customer.email,
-    phone: props.customer.phone,
-    status: props.customer.status,
-    billingAddress: {
-      ...props.customer.billingAddress
-    },
-    shippingAddress: {
-      ...props.customer.shippingAddress
-    }
+    ...props.customer
   }
 })
 
@@ -127,7 +119,10 @@ function onSubmit() {
         loading.value = false
         if (response.status === 200) {
           //TODO show notification
-          store.dispatch('getCustomers')
+          store.dispatch('getCustomers', {
+            sort_field: 'updated_at',
+            sort_direction: 'desc',
+          })
           closeModal()
         }
       })
@@ -170,8 +165,14 @@ function onSubmit() {
               </header>
               <form @submit.prevent="onSubmit">
                 <div class="bg-white px-4 pt-5 pb-4">
-                  <CustomInput class="mb-4" v-model="customer.last_name" label="性" :errorMsg="errorMsg.last_name" />
-                  <CustomInput class="mb-4" v-model="customer.first_name" label="名" :errorMsg="errorMsg.first_name" />
+                  <div class="grid grid-cols-2 gap-4">
+                    <CustomInput class="mb-4" v-model="customer.last_name" label="姓" :errorMsg="errorMsg.last_name" />
+                    <CustomInput class="mb-4" v-model="customer.first_name" label="名" :errorMsg="errorMsg.first_name" />
+                  </div>
+                  <div class="grid grid-cols-2 gap-4">
+                    <CustomInput class="mb-4" v-model="customer.last_kana" label="セイ" :errorMsg="errorMsg.last_kana" />
+                    <CustomInput class="mb-4" v-model="customer.first_kana" label="メイ" :errorMsg="errorMsg.first_kana" />
+                  </div>
                   <CustomInput class="mb-4" v-model="customer.email" label="メールアドレス" :errorMsg="errorMsg.email" />
                   <CustomInput class="mb-4" v-model="customer.phone" label="電話番号" :errorMsg="errorMsg.phone" />
                   <CustomInput type="checkbox" class="mb-4" v-model="customer.status" label="ステータス"
@@ -184,10 +185,10 @@ function onSubmit() {
                         class="text-red-500 text-sm">請求先住所を設定してください</p>
                       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                         <CustomInput type="select" :select-options="countries"
-                          v-model="customer.billingAddress.country_code" label="国•地域を選択してください" />
+                          v-model="customer.billingAddress.country_code" label="国•地域" />
                         <CustomInput v-model="customer.billingAddress.zipcode" label="郵便番号" />
                         <CustomInput type="select" :select-options="billingStateOptions"
-                          v-model="customer.billingAddress.state" label="都道府県を選択してください" />
+                          v-model="customer.billingAddress.state" label="都道府県" />
                         <CustomInput v-model="customer.billingAddress.city" label="市町村" />
                         <CustomInput v-model="customer.billingAddress.address1" label="丁目•番地•号" />
                         <CustomInput v-model="customer.billingAddress.address2" label="建物名" />
@@ -200,10 +201,10 @@ function onSubmit() {
                       <div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                           <CustomInput type="select" :select-options="countries"
-                            v-model="customer.shippingAddress.country_code" label="国•地域を選択してください" />
+                            v-model="customer.shippingAddress.country_code" label="国•地域" />
                           <CustomInput v-model="customer.shippingAddress.zipcode" label="郵便番号" />
                           <CustomInput type="select" :select-options="shippingStateOptions"
-                            v-model="customer.shippingAddress.state" label="都道府県を選択してください" />
+                            v-model="customer.shippingAddress.state" label="都道府県" />
                           <CustomInput v-model="customer.shippingAddress.city" label="市町村" />
                           <CustomInput v-model="customer.shippingAddress.address1" label="丁目•番地•号" />
                           <CustomInput v-model="customer.shippingAddress.address2" label="建物名" />

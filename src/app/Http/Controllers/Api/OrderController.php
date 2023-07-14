@@ -19,13 +19,19 @@ class OrderController extends Controller
         $sortField = request('sort_field', 'updated_at');
         $sortDirection = request('sort_direction', 'desc');
 
-        $query = Order::query();
-        $query->orderBy($sortField, $sortDirection);
+        $orders = Order::query();
 
         if ($search) {
-            $query->where('id', $search);
+            $orders->where('id', $search);
         }
-        return OrderListResource::collection($query->paginate($perPage));
+
+        // if ($sortField === 'name') {
+        //     $orders->orderByRaw("CONCAT(last_name, first_name) {$sortDirection}");
+        // } else {
+            $orders = $orders->orderBy($sortField, $sortDirection);
+        // }
+
+        return OrderListResource::collection($orders->paginate($perPage));
     }
 
     public function view(Order $order)

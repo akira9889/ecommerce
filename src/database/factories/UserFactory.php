@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Enums\ProfileType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\User;
-use App\Models\Customer;
+use App\Models\Profile;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -21,29 +22,51 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+            'status' => 'active',
+            'is_admin' => true,
         ];
     }
 
-    public function withCustomer()
+    public function withProfile()
     {
         return $this->afterCreating(function (User $user) {
-            $names = explode(" ", $user->name);
+            $names = explode(" ", $this->faker->name());
 
-            $katakanaLastName = $this->convertToKatakana($names[0]);
-            $katakanaFirstName = !empty($names[1]) ? $this->convertToKatakana($names[1]) : '';
+            $lastName = $names[0];
+            $firstName = $names[1];
 
-            $customer = new Customer();
-            $customer->user_id = $user->id;
-            $customer->last_name = $katakanaLastName;
-            $customer->first_name = $katakanaFirstName;
-            $customer->phone = str_replace('-', '', $this->faker->phoneNumber);
-            $customer->status = 'active';
-            $customer->save();
+            // $lastKana = $this->convertToKatakana($lastName);
+            // $firstKana = $this->convertToKatakana($firstName);
+
+            $profileData = [
+                'user_id' => $user->id,
+                'last_name' => $lastName,
+                'first_name' => $firstName,
+                'last_kana' => fake()->lastKanaName,
+                'first_kana' => fake()->firstKanaName,
+                'phone' => str_replace('-', '', $this->faker->phoneNumber),
+                'updated_at' => fake()->dateTimeBetween('-1 year', 'now')
+            ];
+
+            if ($user->is_admin === true) {
+                // Create a profile with type Admin
+                $adminProfileData = $profileData;
+                $adminProfileData['type'] = ProfileType::Admin;
+                Profile::create($adminProfileData);
+
+                // Create a profile with type Customer
+                $customerProfileData = $profileData;
+                $customerProfileData['type'] = ProfileType::Customer;
+                Profile::create($customerProfileData);
+            } else {
+                // Create a profile with type Customer
+                $profileData['type'] = ProfileType::Customer;
+                Profile::create($profileData);
+            }
         });
     }
 
