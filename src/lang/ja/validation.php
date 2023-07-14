@@ -167,6 +167,7 @@ return [
         'last_kana' => 'セイ',
         'first_kana' => 'メイ',
         'email' => 'メールアドレス',
+        'phone' => '電話番号',
         'password' => 'パスワード',
         'new_password' => '新しいパスワード',
         'quantity' => '数量',
