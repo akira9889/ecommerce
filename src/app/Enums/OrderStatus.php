@@ -16,7 +16,7 @@ enum OrderStatus: string
             self::Unpaid->value => '未払い',
             self:: Paid->value => '支払い済み',
             self:: Canceled->value => 'キャンセル',
-            self:: Shipped->value => '出荷済み',
+            self:: Shipped->value => '発送済み',
             self:: Completed->value => '完了',
         ];
     }
