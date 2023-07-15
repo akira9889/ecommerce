@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatus;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -23,5 +24,15 @@ class OrderController extends Controller
             return response('この注文の閲覧権限がありません', 403);
         }
         return view('order.view', compact('order'));
+    }
+
+    public function cancel(Request $request, Order $order)
+    {
+        $order->status = OrderStatus::Canceled->value;
+        $order->save();
+
+        $request->session()->flash('flash_message', '注文をキャンセルしました。');
+
+        return to_route('order.view', compact('order'));
     }
 }

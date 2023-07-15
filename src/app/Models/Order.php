@@ -25,6 +25,10 @@ class Order extends Model
         return $this->status === OrderStatus::Unpaid->value;
     }
 
+    public function isOrderCancelable() {
+        return ($this->status === OrderStatus::Unpaid->value) || ($this->status === OrderStatus::Paid->value);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
