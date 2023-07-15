@@ -17,8 +17,7 @@
                         <tr>
                             <td class="font-bold">支払い状況</td>
                             <td>
-                                <span
-                                    class="text-white p-1 rounded {{ $order->isPaid() ? 'bg-emerald-500' : 'bg-gray-400' }}">{{ $order->isPaid() ? '支払い済み' : '未払い' }}</span>
+                                <x-order-status :order-status="$order->status" />
                             </td>
                         </tr>
                         <tr>
@@ -54,8 +53,18 @@
                 <!--/ Order Item -->
                 <hr class="my-3"/>
             @endforeach
+            <div class="flex justify-end">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="font-bold">商品の小計：</td>
+                            <td class="text-xl font-semibold">￥{{ $order->total_price }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            @if (!$order->isPaid())
+            @if ($order->isUnPaid())
                 <form action="{{ route('cart.checkout-order', $order) }}" method="post">
                     @csrf
                     <button type="submit" class="btn-primary flex justify-center items-center w-full py-3 text-lg">

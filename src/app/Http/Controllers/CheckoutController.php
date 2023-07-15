@@ -7,6 +7,7 @@ use App\Enums\PaymentStatus;
 use App\Http\Helpers\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\OrderItem;
 use App\Models\Payment;
 use Illuminate\Http\Request;
@@ -84,6 +85,29 @@ class CheckoutController extends Controller
             $orderItem['order_id'] = $order->id;
             OrderItem::create($orderItem);
         }
+
+        $orderDetailData = [
+            'order_id' => $order->id,
+            'first_name' => $user->profile->first_name,
+            'last_name' => $user->profile->last_name,
+            'first_kana' => $user->profile->first_kana,
+            'last_kana' => $user->profile->last_kana,
+            'phone' => $user->profile->phone,
+            'billing_address1' => $user->profile->billingAddress->address1,
+            'billing_address2' => $user->profile->billingAddress->address2 ?? null,
+            'billing_city' => $user->profile->billingAddress->city,
+            'billing_state' => $user->profile->billingAddress->state,
+            'billing_zipcode' => $user->profile->billingAddress->zipcode,
+            'billing_country_code' => $user->profile->billingAddress->country_code,
+            'shipping_address1' => $user->profile->shippingAddress->address1,
+            'shipping_address2' => $user->profile->shippingAddress->address2 ?? null,
+            'shipping_city' => $user->profile->shippingAddress->city,
+            'shipping_state' => $user->profile->shippingAddress->state,
+            'shipping_zipcode' => $user->profile->shippingAddress->zipcode,
+            'shipping_country_code' => $user->profile->shippingAddress->country_code,
+        ];
+
+        OrderDetail::create($orderDetailData);
 
         // Create Payment
         $paymentData = [

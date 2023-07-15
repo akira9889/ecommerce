@@ -20,9 +20,9 @@ class Order extends Model
         'updated_by'
     ];
 
-    public function isPaid()
+    public function isUnpaid()
     {
-        return $this->status === OrderStatus::Paid->value;
+        return $this->status === OrderStatus::Unpaid->value;
     }
 
     public function user(): BelongsTo
@@ -38,5 +38,10 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function orderDetail(): HasOne
+    {
+        return $this->hasOne(OrderDetail::class);
     }
 }

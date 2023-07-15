@@ -24,16 +24,12 @@
                             </td>
                             <td class="py-1 px-2">{{ $order->created_at }}</td>
                             <td class="py-1 px-2">
-                                <small
-                                    class="text-white p-1 rounded
-                                {{ $order->isPaid() ? 'bg-emerald-500' : 'bg-gray-400'}} ">
-                                    {{ $order->isPaid() ? '支払い済み' : '未払い'}}
-                                </small>
+                                <small><x-order-status :order-status="$order->status" /></small>
                             </td>
                             <td class="py-1 px-2">¥{{ $order->total_price }}</td>
                             <td class="py-1 px-2">{{ $order->items->count() }}個</td>
                             <td class="flex gap-2 w-[150px]">
-                                @if (!$order->isPaid())
+                                @if ($order->isunPaid())
                                 <form action="{{ route('cart.checkout-order', $order) }}" method="post">
                                     @csrf
                                     <button class="btn-primary py-1 px-2 flex items-center" type="submit">
