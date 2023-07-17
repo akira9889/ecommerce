@@ -8,7 +8,7 @@
                     <tr class="text-left">
                         <th>注文</th>
                         <th>日付</th>
-                        <th>支払い状況</th>
+                        <th>注文状況</th>
                         <th>注文合計</th>
                         <th>商品数</th>
                         <th class="w-64">支払い</th>

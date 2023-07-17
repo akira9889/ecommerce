@@ -47,6 +47,7 @@ const state = {
   toast: {
     show: false,
     message: '',
+    type: '',
     delay: 5000
   },
 }

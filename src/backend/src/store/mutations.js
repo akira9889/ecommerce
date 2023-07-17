@@ -75,9 +75,11 @@ export function setOrders(state, [loading, response = null]) {
   state.orders.loading = loading
 }
 
-export function showToast(state, message) {
+export function showToast(state, [message, type = 'info']) {
+
   state.toast.show = true
   state.toast.message = message
+  state.toast.type = type
 }
 
 export function hideToast(state) {

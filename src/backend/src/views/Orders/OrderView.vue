@@ -4,17 +4,15 @@ import store from '../../store';
 import { useRoute } from 'vue-router';
 import axiosClient from '../../axios';
 import OrderStatus from './OrderStatus.vue';
-
+import Spinner from '../../components/core/Spinner.vue'
 const route = useRoute()
 
 const order = ref({})
 const orderStatuses = ref([])
+const loading = ref(false)
 
 onMounted(() => {
-    store.dispatch('getOrder', route.params.id)
-        .then(({ data }) => {
-            order.value = data
-        })
+    getOrder()
 
     axiosClient.get('/orders/statuses')
         .then(({ data }) => {
@@ -22,10 +20,24 @@ onMounted(() => {
         })
 })
 
+function getOrder() {
+    store.dispatch('getOrder', route.params.id)
+        .then(({ data }) => {
+            order.value = data
+        })
+}
+
 function onStatusChange() {
+    loading.value = true
     axiosClient.post(`/orders/change-status/${order.value.id}/${order.value.status}`)
         .then(() => {
-            store.commit('showToast', `注文状況が「${orderStatuses.value[order.value.status]}」に更新されました。`)
+            loading.value = false
+            store.commit('showToast', [`注文状況が「${orderStatuses.value[order.value.status]}」に更新されました。`])
+        })
+        .catch(({ response }) => {
+            loading.value = false
+            store.commit('showToast', [response.data.message, 'error'])
+            getOrder()
         })
 }
 
@@ -36,7 +48,7 @@ function onStatusChange() {
         <!-- Order Details -->
         <h2 class="flex justify-between items-center text-2xl font-bold pb-2 border-b border-gray-300">
             注文詳細
-            <OrderStatus :order="order" :orderStatuses="orderStatuses"/>
+            <OrderStatus :order="order" :orderStatuses="orderStatuses" />
         </h2>
         <table class="table-sm">
             <tbody>
@@ -51,9 +63,13 @@ function onStatusChange() {
                 <tr>
                     <td class="font-bold">注文状況</td>
                     <td>
-                        <select v-model="order.status" @change="onStatusChange">
-                            <option v-for="(status, key) in orderStatuses" :value="key" :key="key">{{ status }}</option>
-                        </select>
+                        <div class="flex items-center">
+                            <select v-if="order.status !== 'canceled'" v-model="order.status" @change="onStatusChange">
+                                <option v-for="(status, key) in orderStatuses" :value="key" :key="key">{{ status }}</option>
+                            </select>
+                            <OrderStatus v-else :order="order" :orderStatuses="orderStatuses" />
+                            <Spinner v-if="loading" class="h-14" message="変更中" />
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -95,7 +111,8 @@ function onStatusChange() {
             <div>
                 <h2 class="text-xl font-semibold mt-6 pb-2 border-b border-gray-300">請求先住所</h2>
                 <div>
-                    〒{{ order.customer.billingAddress.zipcode.slice(0, 3) + '-' +  order.customer.billingAddress.zipcode.slice(3) }} <br>
+                    〒{{ order.customer.billingAddress.zipcode.slice(0, 3) + '-' +
+                        order.customer.billingAddress.zipcode.slice(3) }} <br>
                     {{ order.customer.billingAddress.country }} <br>
                     {{ order.customer.billingAddress.state }}{{ order.customer.billingAddress.city }}{{
                         order.customer.billingAddress.address1 }}{{ order.customer.billingAddress.address2 }}
@@ -105,7 +122,8 @@ function onStatusChange() {
                 <h2 class="text-xl font-semibold mt-6 pb-2 border-b border-gray-300">配達先住所</h2>
 
                 <div>
-                    〒{{ order.customer.shippingAddress.zipcode.slice(0, 3) + '-' + order.customer.shippingAddress.zipcode.slice(3) }} <br>
+                    〒{{ order.customer.shippingAddress.zipcode.slice(0, 3) + '-' +
+                        order.customer.shippingAddress.zipcode.slice(3) }} <br>
                     {{ order.customer.shippingAddress.country }} <br>
                     {{ order.customer.shippingAddress.state }}{{ order.customer.shippingAddress.city }}{{
                         order.customer.shippingAddress.address1 }}{{ order.customer.shippingAddress.address2 }}
