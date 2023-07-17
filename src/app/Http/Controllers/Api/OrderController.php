@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-
 use App\Http\Resources\OrderListResource;
 use App\Http\Resources\OrderResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -46,9 +47,41 @@ class OrderController extends Controller
 
     public function changeStatus(Order $order, $status)
     {
-        $order->status = $status;
-        $order->save();
+        if ($status === OrderStatus::Canceled->value) {
+            $this->cancel($order);
+        } else {
+            $order->status = $status;
+            $order->save();
 
-        return response('', 200);
+            return response('', 200);
+        }
+    }
+
+    private function cancel(Order $order)
+    {
+        try {
+            $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
+
+            $session_id = $order->payment->session_id;
+
+            $session = $stripe->checkout->sessions->retrieve($session_id);
+            if (!$session) {
+                throw new \Exception('セッションが無効です');
+            }
+
+            $paymentIntent = $session->payment_intent;
+
+            $refund = $stripe->refunds->create(['payment_intent' => $paymentIntent]);
+
+            if ($refund->status === 'succeeded') {
+                $order->status = OrderStatus::Canceled->value;
+                $order->save();
+                return response('', 200);
+            } else {
+                throw new \Exception('返金の処理に失敗しました。');
+            }
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage(), 500);
+        }
     }
 }

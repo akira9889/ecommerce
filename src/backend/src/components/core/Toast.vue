@@ -8,6 +8,13 @@ let timeout = null
 
 const percent = ref(0)
 const toast = computed(() => store.state.toast)
+const bgColor = computed(() => {
+  if (toast.value.type === 'info') {
+    return 'bg-emerald-500'
+  } else if (toast.value.type === 'error') {
+    return 'bg-red-500'
+  }
+})
 
 watch(store.state.toast, (newToast) => {
   if (newToast) {
@@ -24,7 +31,7 @@ watch(store.state.toast, (newToast) => {
       close()
       timeout = null;
     }, toast.value.delay);
-    
+
     const startDate = Date.now();
     const futureDate = Date.now() + toast.value.delay;
     interval = setInterval(() => {
@@ -46,7 +53,7 @@ function close() {
 <template>
   <!-- Toast -->
   <div v-show="toast.show"
-    class="fixed w-[400px] left-1/2 -ml-[200px] top-16 py-2 px-4 pb-4 bg-emerald-500 text-white">
+    class="fixed w-[400px] left-1/2 -ml-[200px] top-16 py-2 px-4 pb-4 text-white" :class="bgColor">
     <div class="font-semibold">{{ toast.message }}</div>
     <button @click="close"
       class="absolute flex items-center justify-center right-2 top-2 w-[30px] h-[30px] rounded-full hover:bg-black/10 transition-colors">

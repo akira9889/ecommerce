@@ -28,11 +28,34 @@ class OrderController extends Controller
 
     public function cancel(Request $request, Order $order)
     {
-        $order->status = OrderStatus::Canceled->value;
-        $order->save();
+        try {
+            $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
 
-        $request->session()->flash('flash_message', '注文をキャンセルしました。');
+            $session_id = $order->payment->session_id;
 
-        return to_route('order.view', compact('order'));
+
+            $session = $stripe->checkout->sessions->retrieve($session_id);
+            if (!$session) {
+                return view('checkout.failure', ['message' => 'セッションが無効です']);
+            }
+
+            $paymentIntent = $session->payment_intent;
+
+            $refund = $stripe->refunds->create(['payment_intent' => $paymentIntent]);
+
+            if ($refund->status == 'succeeded') {
+                $order->status = OrderStatus::Canceled->value;
+                $order->save();
+
+                $request->session()->flash('flash_message', '注文をキャンセルしました。');
+
+                return to_route('order.view', compact('order'));
+            } else {
+                return view('checkout.failure', ['message' => '返金の処理に失敗しました。']);
+            }
+
+        } catch (\Exception $e) {
+            return view('checkout.failure', ['message' => '返金の処理に失敗しました。']);
+        }
     }
 }
