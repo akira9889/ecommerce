@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class AdminUserSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -29,14 +29,13 @@ class AdminUserSeeder extends Seeder
 
         foreach ($users as $userData) {
             User::factory()
-            ->withProfile()
             ->create($userData);
         }
 
-        // ランダムなユーザーを10人作成
-        User::factory()
-        ->withProfile()
-        ->count(100)
-        ->create();
+        // Create 50 admin users
+        \App\Models\User::factory(48)->create(['is_admin' => true]);
+
+        // Create 50 non-admin users
+        \App\Models\User::factory(50)->create(['is_admin' => false]);
     }
 }
