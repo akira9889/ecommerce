@@ -18,7 +18,7 @@ class OrderListResource extends JsonResource
             'id' => $this->id,
             'status' => $this->status,
             'total_price' => $this->total_price,
-            'number_of_items' => $this->items()->count(),
+            'number_of_items' => $this->items->sum('quantity'),
             'customer' => [
                 'id' => $this->user->id,
                 'first_name' => $this->user->profile->first_name,
