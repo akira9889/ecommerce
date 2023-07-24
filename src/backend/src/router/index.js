@@ -5,6 +5,7 @@ import Dashboard from "../views/Dashboard.vue"
 import Products from "../views/Products/Products.vue"
 import Users from "../views/Users/Users.vue"
 import Customers from "../views/Customers/Customers.vue"
+import CustomerView from "../views/Customers/CustomerView.vue"
 import Orders from "../views/Orders/Orders.vue"
 import OrderView from "../views/Orders/OrderView.vue"
 import Login from "../views/Login.vue"
@@ -41,6 +42,11 @@ const routes = [
         path: 'customers',
         name: 'app.customers',
         component: Customers
+      },
+      {
+        path: 'customers/:id',
+        name: 'app.customers.view',
+        component: CustomerView
       },
       {
         path: 'orders',
