@@ -56,8 +56,8 @@ const emit = defineEmits(['update:modelValue', 'change'])
 <template>
   <div class="mt-2">
       <p v-if="errorMsg" class="text-red-500 text-sm leading-4">{{ errorMsg[0]}}</p>
-      <div class="flex rounded-md shadow-sm relative mt-5">
-        <label v-if="inputValue" :class="[inputValue ? 'block' : 'hidden', 'absolute text-xs leading-4 text-gray-900 top-0 left-0 -translate-y-[110%]']">{{ label }}</label>
+      <div class="flex rounded-md relative mt-5" :class="{'shadow-sm': type !== 'checkbox'}">
+        <label v-if="inputValue && type !== 'checkbox'" :class="[inputValue ? 'block' : 'hidden', 'absolute text-xs leading-4 text-gray-900 top-0 left-0 -translate-y-[110%]']">{{ label }}</label>
         <span v-if="prepend"
               class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-200 text-gray-500 text-sm">
           {{ prepend }}
