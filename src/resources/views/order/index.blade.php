@@ -27,7 +27,7 @@
                                 <small><x-order-status :order-status="$order->status" /></small>
                             </td>
                             <td class="py-1 px-2">¥{{ $order->total_price }}</td>
-                            <td class="py-1 px-2">{{ $order->items->count() }}個</td>
+                            <td class="py-1 px-2">{{ $order->items->sum('quantity') }}個</td>
                             <td class="flex gap-2 w-[150px]">
                                 @if ($order->isunPaid())
                                 <form action="{{ route('cart.checkout-order', $order) }}" method="post">
