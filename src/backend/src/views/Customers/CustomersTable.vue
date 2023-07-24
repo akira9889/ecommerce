@@ -1,21 +1,17 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 import TableHeaderCell from '../../components/core/Table/TableHeaderCell.vue';
 import Spinner from '../../components/core/Spinner.vue';
 import store from '../../store';
-import { onMounted, computed } from 'vue';
 import { CUSTOMERS_PER_PAGE } from '../../constants'
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { DotsVerticalIcon, PencilIcon, TrashIcon } from "@heroicons/vue/outline";
-import { watch } from 'vue';
 
 const per_page = ref(CUSTOMERS_PER_PAGE)
 const search = ref('')
 const customers = computed(() => store.state.customers)
 const sortField = ref('updated_at')
 const sortDirection = ref('desc')
-
-const emit = defineEmits(['clickEdit'])
 
 onMounted(() => {
   getCustomers()
@@ -64,17 +60,13 @@ function sortCustomer(field) {
   getCustomers()
 }
 
-function editCustomer(customer) {
-  emit('clickEdit', customer);
-}
-
 function deleteCustomer(customer) {
   if (!confirm(`本当に削除してもいいですか？`)) {
     return
   }
   store.dispatch('deleteCustomer', customer.id)
     .then(() => {
-      //TODO Show notification
+      store.commit('showToast', [`顧客を削除しました。`])
       store.dispatch('getCustomers')
     })
 }
@@ -157,13 +149,13 @@ function deleteCustomer(customer) {
                   class="absolute z-10 left-[85%] -top-1/2 w-24 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-">
                   <div class="px-1 py-1">
                     <MenuItem v-slot="{ active }">
-                    <button :class="[
+                    <router-link :class="[
                       active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                       'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                    ]" @click="editCustomer(customer)">
+                    ]" :to="{name: 'app.customers.view', params: {id: customer.id}}">
                       <PencilIcon :active="active" class="mr-2 h-5 w-5 text-indigo-400" aria-hidden="true" />
                       編集
-                    </button>
+                    </router-link>
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
                     <button :class="[

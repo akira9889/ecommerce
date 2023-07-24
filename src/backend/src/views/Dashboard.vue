@@ -165,7 +165,7 @@ const options = {
     <div class="bg-white py-6 px-2 rounded-lg shadow-xl flex flex-col items-center justify-center">
       <label class="font-semibold">新規顧客</label>
       <div v-if="!loading.latestCustomers" class="lg:w-fit md:w-full w-fit text-left ">
-        <router-link to="/" v-for="customer of latestCustomers" :key="customer.email"
+        <router-link :to="{ name: 'app.customers.view', params: { id: customer.id }}" v-for="customer of latestCustomers" :key="customer.email"
           class="mb-3 flex hover:bg-gray-100 items-center">
           <div class="w-5 h-5 lg:w-12 lg:h-12 bg-gray-200 flex items-center justify-center rounded-full mr-2">
             <UserIcon class="lg:w-5 lg:h-5 w-4 h-4" />
