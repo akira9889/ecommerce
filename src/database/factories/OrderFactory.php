@@ -21,6 +21,7 @@ class OrderFactory extends Factory
         return [
             'total_price' => 0,
             'status' => $this->faker->randomElement(array_keys(OrderStatus::getStatuses())),
+            'created_at' => fake()->dateTimeBetween('-2 year', 'now'),
         ];
     }
 }
