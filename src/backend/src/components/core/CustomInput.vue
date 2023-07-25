@@ -51,6 +51,11 @@ const inputClasses = computed(() => {
 })
 
 const emit = defineEmits(['update:modelValue', 'change'])
+
+function onChange(value) {
+  emit('update:modelValue', value)
+  emit('change', value)
+}
 </script>
 
 <template>
@@ -84,11 +89,11 @@ const emit = defineEmits(['update:modelValue', 'change'])
                    :name="name"
                    :required="required"
                    :value="inputValue"
-                   @change="emit('update:modelValue', $event.target.value)"
+                   @change="onChange($event.target.value)"
                    :class="inputClasses"
                    :placeholder="label"
                    step="1">
-              <option value="">{{ label }}</option>
+              <option v-if="label" value="">{{ label }}</option>
               <option v-for="option of selectOptions" :value="option.key" :key="option.key">{{ option.text }}</option>
             </select>
         </template>
