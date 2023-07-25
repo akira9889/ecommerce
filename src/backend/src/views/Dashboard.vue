@@ -91,11 +91,11 @@ const options = {
 </script>
 
 <template>
-  <h1 class="text-4xl mb-3">ダッシュボード</h1>
+  <h1 class="text-3xl mb-3 font-semibold">ダッシュボード</h1>
   <hr>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
     <!-- Active Customers -->
-    <div class="bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center justify-center">
+    <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center justify-center" style="animation-delay: 0.1s;">
       <label class="text-lg block font-semibold mb-2">アクティブ顧客</label>
       <template v-if="!loading.customersCount">
         <span class="text-3xl font-semibold py-2">{{ customersCount }}<span
@@ -105,7 +105,7 @@ const options = {
     </div>
     <!--/ Active Customers -->
     <!-- Active Products -->
-    <div class="bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center justify-center">
+    <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center justify-center" style="animation-delay: 0.2s;">
       <label class="text-lg block font-semibold mb-2">公開商品</label>
       <template v-if="!loading.customersCount">
         <span class="text-3xl font-semibold py-2">{{ productsCount }}<span class="text-sm
@@ -115,7 +115,7 @@ const options = {
     </div>
     <!--/ Active Products -->
     <!-- Paid Orders -->
-    <div class="bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center justify-center">
+    <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center justify-center" style="animation-delay: 0.3s;">
       <label class="text-lg block font-semibold mb-2">支払い済み注文</label>
       <template v-if="!loading.customersCount">
         <span class="text-3xl font-semibold py-2">{{ paidOrders }}<span
@@ -125,7 +125,7 @@ const options = {
     </div>
     <!--/ Paid Orders -->
     <!-- Total Income -->
-    <div class="bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center">
+    <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center" style="animation-delay: 0.4s;">
       <label class="text-lg block font-semibold mb-2">売上額</label>
       <template v-if="!loading.customersCount">
         <span class="text-3xl py-2">{{ totalIncome }}<span class="text-sm font-normal ml-2 inline-block">円</span></span>

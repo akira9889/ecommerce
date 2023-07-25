@@ -92,7 +92,7 @@ function submit() {
             管理者を追加
         </button>
     </div>
-    <div class="flex justify-between border-b-2 pb-3">
+    <div class="flex justify-between px-5 pb-3 items-end">
         <div class="flex items-center">
             <select @change="getUsers(null)" v-model="perPage"
                 class="appearance-none relative block w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
