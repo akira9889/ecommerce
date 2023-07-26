@@ -23,6 +23,13 @@ class OrderController extends Controller
         if ($order->created_by !== $user->id) {
             return response('この注文の閲覧権限がありません', 403);
         }
+
+        $order->load([
+            'items.product' => function ($query) {
+                $query->withTrashed();
+            },
+        ]);
+        
         return view('order.view', compact('order'));
     }
 
