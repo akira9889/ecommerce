@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('image_size')->nullable();
             $table->longText('description')->nullable();
             $table->integer('price');
+            $table->boolean('published')->default(false);
             $table->foreignIdFor(User::class, 'created_by')->nullable();
             $table->foreignIdFor(User::class, 'updated_by')->nullable();
             $table->softDeletes();

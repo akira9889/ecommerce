@@ -148,7 +148,7 @@ export function createProduct({ commit }, product) {
     form.append('image', product.image)
     form.append('description', product.description || '')
     form.append('price', product.price)
-
+    form.append('published', product.published ? 1 : 0)
     product = form
   }
 
@@ -162,6 +162,7 @@ export function updateProduct({ commit }, product) {
   form.append('title', product.title)
   form.append('description', product.description)
   form.append('price', product.price)
+  form.append('published', product.published ? 1 : 0)
   form.append('_method', 'PUT')
   if (product.image instanceof File) {
     form.append('image', product.image)
