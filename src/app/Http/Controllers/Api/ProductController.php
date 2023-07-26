@@ -43,7 +43,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->validated();
-        $data['crated_by'] = $request->user()->id;
+        $data['created_by'] = $request->user()->id;
         $data['updated_by'] = $request->user()->id;
 
         $image = $data['image'] ?? null;
@@ -91,12 +91,13 @@ class ProductController extends Controller
             $data['image'] = URL::to(Storage::url($relativePath));
             $data['image_mime'] = $image->getClientMimeType();
             $data['image_size'] = $image->getSize();
+
+            if ($product->image) {
+                $folderName = basename(dirname($product->image));
+                Storage::disk('public')->deleteDirectory('images/' . $folderName);
+            }
         }
 
-        if ($product->image) {
-            $folderName = basename(dirname($product->image));
-            Storage::disk('public')->deleteDirectory('images/' . $folderName);
-        }
 
         $product->update($data);
 
