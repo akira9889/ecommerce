@@ -34,8 +34,7 @@ class DashboardController extends Controller
 
     public function activeProducts()
     {
-        //TODO アクティブ商品だけを取得
-        return Product::count();
+        return Product::where('published', true)->count();
     }
 
     public function paidOrders()

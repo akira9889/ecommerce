@@ -7,9 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Http\Resources\OrderListResource;
 use App\Http\Resources\OrderResource;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -29,7 +26,7 @@ class OrderController extends Controller
         // if ($sortField === 'name') {
         //     $orders->orderByRaw("CONCAT(last_name, first_name) {$sortDirection}");
         // } else {
-            $orders = $orders->orderBy($sortField, $sortDirection);
+        $orders = $orders->orderBy($sortField, $sortDirection);
         // }
 
         return OrderListResource::collection($orders->paginate($perPage));
@@ -37,6 +34,15 @@ class OrderController extends Controller
 
     public function view(Order $order)
     {
+        $order->load([
+            'items.product' => function ($query) {
+                $query->withTrashed();
+            },
+            'orderDetail',
+            'orderDetail.shippingCountry',
+            'orderDetail.billingCountry'
+        ]);
+
         return new OrderResource($order);
     }
 
