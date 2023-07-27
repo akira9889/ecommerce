@@ -39,9 +39,7 @@ function handleSidebarOpened() {
       <Navbar @toggle-sidebar="toggleSidebar" />
       <!-- Content -->
       <main class="p-6">
-        <div class="p-4 rounded bg-white">
-          <router-view></router-view>
-        </div>
+        <router-view></router-view>
       </main>
       <!-- Content -->
     </div>
