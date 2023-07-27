@@ -93,7 +93,7 @@ function sortOrder(field) {
           <TableHeaderCell @click="sortOrder" field="total_price" :sort-field="sortField" :sort-direction="sortDirection">
             値段
           </TableHeaderCell>
-          <TableHeaderCell @click="sortOrder" field="crated_at" :sort-field="sortField" :sort-direction="sortDirection">
+          <TableHeaderCell @click="sortOrder" field="created_at" :sort-field="sortField" :sort-direction="sortDirection">
             日付
           </TableHeaderCell>
           <TableHeaderCell field="actions">

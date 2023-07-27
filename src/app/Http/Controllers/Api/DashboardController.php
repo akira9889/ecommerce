@@ -6,17 +6,17 @@ use App\Enums\OrderStatus;
 use App\Enums\ProfileType;
 use App\Http\Controllers\Controller;
 use App\Models\Api\User;
-use Illuminate\Http\Request;
 use App\Enums\UserStatus;
 use App\Http\Resources\OrderListResource;
 use App\Models\Api\Product;
 use App\Models\Order;
-use Carbon\Carbon;
+use App\Traits\ReportTrait;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
+    use ReportTrait;
+
     public function activeCustomers()
     {
         $user = User::where('status', UserStatus::Active->value);
@@ -25,8 +25,8 @@ class DashboardController extends Controller
 
         if ($fromToDate) {
             list($fromDate, $toDate) = $fromToDate;
-            $user->where('created_at', '>=', $fromDate);
-            $user->where('created_at', '<=', $toDate);
+            $user->where('created_at', '>=', $fromDate)
+                ->where('created_at', '<=', $toDate);
         }
 
         return $user->count();
@@ -46,8 +46,8 @@ class DashboardController extends Controller
 
         if ($fromToDate) {
             list($fromDate, $toDate) = $fromToDate;
-            $order->where('created_at', '>=', $fromDate);
-            $order->where('created_at', '<=', $toDate);
+            $order->where('created_at', '>=', $fromDate)
+                ->where('created_at', '<=', $toDate);
         }
 
             return $order->count();
@@ -62,8 +62,8 @@ class DashboardController extends Controller
 
         if ($fromToDate) {
             list($fromDate, $toDate) = $fromToDate;
-            $order->where('created_at', '>=', $fromDate);
-            $order->where('created_at', '<=', $toDate);
+            $order->where('created_at', '>=', $fromDate)
+                ->where('created_at', '<=', $toDate);
         }
 
         return $order->sum('total_price');
@@ -83,8 +83,8 @@ class DashboardController extends Controller
 
         if ($fromToDate) {
             list($fromDate, $toDate) = $fromToDate;
-            $orders->where('orders.created_at', '>=', $fromDate);
-            $orders->where('orders.created_at', '<=', $toDate);
+            $orders->where('orders.created_at', '>=', $fromDate)
+                ->where('orders.created_at', '<=', $toDate);
         }
 
         return $orders->get();
@@ -112,22 +112,5 @@ class DashboardController extends Controller
             ->get();
 
         return OrderListResource::collection($orders);
-    }
-
-    private function getFromToDate()
-    {
-        $d = \request()->get('d');
-        $array = [
-            'today' => [Carbon::today()->startOfDay(), Carbon::today()->endOfDay()],
-            '1d' => [Carbon::yesterday()->startOfDay()->toDateTimeString(), Carbon::yesterday()->endOfDay()->toDateTimeString()],
-            '1w' => [Carbon::now()->subDays(7), Carbon::now()],
-            '2w' => [Carbon::now()->subDays(14), Carbon::now()],
-            '1m' => [Carbon::now()->subDays(30), Carbon::now()],
-            '3m' => [Carbon::now()->subDays(60), Carbon::now()],
-            '6m' => [Carbon::now()->subDays(180), Carbon::now()],
-            '1y' => [Carbon::now()->subDays(365), Carbon::now()],
-        ];
-
-        return $array[$d] ?? null;
     }
 }

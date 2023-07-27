@@ -8,6 +8,9 @@ import Customers from "../views/Customers/Customers.vue"
 import CustomerView from "../views/Customers/CustomerView.vue"
 import Orders from "../views/Orders/Orders.vue"
 import OrderView from "../views/Orders/OrderView.vue"
+import Report from '../views/Reports/Report.vue'
+import OrdersReport from '../views/Reports/OrdersReport.vue'
+import CustomersReport from '../views/Reports/CustomersReport.vue'
 import Login from "../views/Login.vue"
 import RequestPassword from "../views/RequestPassword.vue"
 import ResetPassword from "../views/ResetPassword.vue"
@@ -18,6 +21,7 @@ const routes = [
   {
     path: '/app',
     name: 'app',
+    redirect: '/app/dashboard',
     component: AppLayout,
     meta: {
       requiresAuth: true
@@ -58,8 +62,27 @@ const routes = [
         name: 'app.orders.view',
         component: OrderView
       },
+      {
+        path: '/reports',
+        name: 'reports',
+        component: Report,
+        redirect: '/reports/orders',
+        children: [
+          {
+            path: 'orders',
+            name: 'reports.orders',
+            component: OrdersReport
+          },
+          {
+            path: 'customers',
+            name: 'reports.customers',
+            component: CustomersReport
+          }
+        ]
+      },
     ]
   },
+
   {
     path: '/login',
     name: 'login',
@@ -98,9 +121,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !store.state.user.token) {
-    next({name: 'login'})
-  } else if (to.meta.requiresGuest && store.state.user.token){
-    next({name: 'app.dashboard'})
+    next({ name: 'login' })
+  } else if (to.meta.requiresGuest && store.state.user.token) {
+    next({ name: 'app.dashboard' })
   } else {
     next()
   }
