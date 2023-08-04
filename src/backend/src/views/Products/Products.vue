@@ -86,7 +86,7 @@ function submit() {
 <template>
     <h1 class="text-3xl font-semibold">商品一覧</h1>
     <div class="bg-white p-5 rounded-lg shadow animate-fade-in-down mt-3">
-        <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center justify-between">
             <div class="flex items-center">
                 <select @change="getProducts(null)" v-model="perPage"
                     class="appearance-none relative block w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
@@ -109,7 +109,7 @@ function submit() {
         </div>
         <ProductModal v-model="showModal" :product="editingProduct" @close="closeProductModal" @submit="submit" />
         <ProductsTable :products="products" :sortField="sortField" :sortDirection="sortDirection" @sortProduct="sortProduct"
-            @clickEdit="editProduct" @clickDelete="deleteProduct" />
+            @clickEdit="editProduct" @clickDelete="deleteProduct" class="mt-3" />
         <div v-if="!products.loading && products.total > products.limit" class="flex justify-between items-center mt-5">
             <span>{{ products.from }}件から{{ products.to }}件を表示</span>
             <nav class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px" aria-label="Pagination">

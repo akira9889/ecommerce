@@ -119,7 +119,7 @@ function onChangeDate() {
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
     <!-- Active Products -->
     <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center justify-center"
-      style="animation-delay: 0.2s;">
+      style="animation-delay: 0.1s;">
       <label class="text-lg block font-semibold mb-2">公開商品</label>
       <template v-if="!loading['products-count']">
         <span class="text-3xl font-semibold py-2">{{ productsCount }}<span class="text-sm
@@ -130,7 +130,7 @@ function onChangeDate() {
     <!--/ Active Products -->
     <!-- Active Customers -->
     <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center justify-center"
-      style="animation-delay: 0.1s;">
+      style="animation-delay: 0.2s;">
       <label class="text-lg block font-semibold mb-2">アクティブ顧客</label>
       <template v-if="!loading['customers-count']">
         <span class="text-3xl font-semibold py-2">{{ customersCount }}<span
@@ -163,7 +163,7 @@ function onChangeDate() {
   </div>
 
   <div class="grid grid-rows-2 grid-flow-row grid-cols-1 md:grid-cols-3 gap-3">
-    <div class="md:col-span-2 md:row-span-2 bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col">
+    <div class="animate-fade-in-down md:col-span-2 md:row-span-2 bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col" style="animation-delay: 0.5s;">
       <label class="font-semibold">最新の注文</label>
       <template v-if="!loading['latest-orders']">
         <div v-for="order of latestOrders" :key="order.id" class="py-2">
@@ -183,14 +183,14 @@ function onChangeDate() {
       </template>
       <Spinner v-else message="" width="w-8" height="h-8" />
     </div>
-    <div class="bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center justify-center">
+    <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center justify-center" style="animation-delay: 0.6s;">
       <label class="font-semibold">国ごとの注文数</label>
       <div class="w-full">
         <Doughnut v-if="!loading['orders-by-country']" :data="ordersByCountry" :options="chartOptions" />
         <Spinner v-else message="" />
       </div>
     </div>
-    <div class="bg-white py-6 px-2 rounded-lg shadow-xl flex flex-col items-center justify-center">
+    <div class="animate-fade-in-down bg-white py-6 px-2 rounded-lg shadow-xl flex flex-col items-center justify-center" style="animation-delay: 0.7s;">
       <label class="font-semibold">新規顧客</label>
       <div v-if="!loading['latest-customers']" class="lg:w-fit md:w-full w-fit text-left ">
         <router-link :to="{ name: 'app.customers.view', params: { id: customer.id } }" v-for="customer of latestCustomers"

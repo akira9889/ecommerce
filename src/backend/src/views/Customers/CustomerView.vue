@@ -129,73 +129,75 @@ function onSubmit() {
 </script>
 
 <template>
-  <h2 class="flex justify-between items-center text-2xl font-bold pb-2 border-b border-gray-300">
-    顧客情報
-  </h2>
-  <form @submit.prevent="onSubmit" class="relative">
-    <Spinner v-if="loading"
-      class="absolute top-0 right-0 bottom-0 left-0 bg-white flex items-center justify-center z-20" />
-    <div class="px-4 pt-5 pb-4">
-      <div class="md:w-1/2">
-        <div class="grid grid-cols-2 gap-4 items-end">
-          <CustomInput v-model="customer.last_name" label="姓" :errorMsg="errorMsg.last_name" />
-          <CustomInput v-model="customer.first_name" label="名" :errorMsg="errorMsg.first_name" />
-        </div>
-        <div class="grid grid-cols-2 gap-4 items-end">
-          <CustomInput v-model="customer.last_kana" label="セイ" :errorMsg="errorMsg.last_kana" />
-          <CustomInput v-model="customer.first_kana" label="メイ" :errorMsg="errorMsg.first_kana" />
-        </div>
-        <CustomInput v-model="customer.email" label="メールアドレス" :errorMsg="errorMsg.email" />
-        <CustomInput v-model="customer.phone" label="電話番号" :errorMsg="errorMsg.phone" />
-        <CustomInput type="checkbox" v-model="customer.status" label="ステータス" :errorMsg="errorMsg.status" />
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <h2 class="text-xl font-semibold mt-6 pb-2 border-b border-gray-300">請求先住所</h2>
-          <p v-if="errorMsg.billingAddress && Object.keys(errorMsg.billingAddress).length > 0"
-            class="text-red-500 text-sm">請求先住所を設定してください</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <CustomInput type="select" :select-options="countries" v-model="customer.billingAddress.country_code"
-              label="国•地域" />
-            <CustomInput v-model="customer.billingAddress.zipcode" label="郵便番号" />
-            <CustomInput type="select" :select-options="billingStateOptions" v-model="customer.billingAddress.state"
-              label="都道府県" />
-            <CustomInput v-model="customer.billingAddress.city" label="市町村" />
-            <CustomInput v-model="customer.billingAddress.address1" label="丁目•番地•号" />
-            <CustomInput v-model="customer.billingAddress.address2" label="建物名" />
+  <div class="bg-white p-5">
+    <h2 class="flex justify-between items-center text-2xl font-bold pb-2 border-b border-gray-300">
+      顧客情報
+    </h2>
+    <form @submit.prevent="onSubmit" class="relative">
+      <Spinner v-if="loading"
+        class="absolute top-0 right-0 bottom-0 left-0 bg-white flex items-center justify-center z-20" />
+      <div>
+        <div class="md:w-1/2">
+          <div class="grid grid-cols-2 gap-4 items-end">
+            <CustomInput v-model="customer.last_name" label="姓" :errorMsg="errorMsg.last_name" />
+            <CustomInput v-model="customer.first_name" label="名" :errorMsg="errorMsg.first_name" />
           </div>
+          <div class="grid grid-cols-2 gap-4 items-end">
+            <CustomInput v-model="customer.last_kana" label="セイ" :errorMsg="errorMsg.last_kana" />
+            <CustomInput v-model="customer.first_kana" label="メイ" :errorMsg="errorMsg.first_kana" />
+          </div>
+          <CustomInput v-model="customer.email" label="メールアドレス" :errorMsg="errorMsg.email" />
+          <CustomInput v-model="customer.phone" label="電話番号" :errorMsg="errorMsg.phone" />
+          <CustomInput type="checkbox" v-model="customer.status" label="ステータス" :errorMsg="errorMsg.status" />
         </div>
-        <div>
-          <h2 class="text-xl font-semibold mt-6 pb-2 border-b border-gray-300">配達先住所</h2>
-          <p v-if="errorMsg.shippingAddress && Object.keys(errorMsg.shippingAddress).length > 0"
-            class="text-red-500 text-sm">配達先住所を設定してください</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
+            <h2 class="text-xl font-semibold mt-6 pb-2 border-b border-gray-300">請求先住所</h2>
+            <p v-if="errorMsg.billingAddress && Object.keys(errorMsg.billingAddress).length > 0"
+              class="text-red-500 text-sm">請求先住所を設定してください</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-              <CustomInput type="select" :select-options="countries" v-model="customer.shippingAddress.country_code"
+              <CustomInput type="select" :select-options="countries" v-model="customer.billingAddress.country_code"
                 label="国•地域" />
-              <CustomInput v-model="customer.shippingAddress.zipcode" label="郵便番号" />
-              <CustomInput type="select" :select-options="shippingStateOptions" v-model="customer.shippingAddress.state"
+              <CustomInput v-model="customer.billingAddress.zipcode" label="郵便番号" />
+              <CustomInput type="select" :select-options="billingStateOptions" v-model="customer.billingAddress.state"
                 label="都道府県" />
-              <CustomInput v-model="customer.shippingAddress.city" label="市町村" />
-              <CustomInput v-model="customer.shippingAddress.address1" label="丁目•番地•号" />
-              <CustomInput v-model="customer.shippingAddress.address2" label="建物名" />
+              <CustomInput v-model="customer.billingAddress.city" label="市町村" />
+              <CustomInput v-model="customer.billingAddress.address1" label="丁目•番地•号" />
+              <CustomInput v-model="customer.billingAddress.address2" label="建物名" />
+            </div>
+          </div>
+          <div>
+            <h2 class="text-xl font-semibold mt-6 pb-2 border-b border-gray-300">配達先住所</h2>
+            <p v-if="errorMsg.shippingAddress && Object.keys(errorMsg.shippingAddress).length > 0"
+              class="text-red-500 text-sm">配達先住所を設定してください</p>
+            <div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <CustomInput type="select" :select-options="countries" v-model="customer.shippingAddress.country_code"
+                  label="国•地域" />
+                <CustomInput v-model="customer.shippingAddress.zipcode" label="郵便番号" />
+                <CustomInput type="select" :select-options="shippingStateOptions" v-model="customer.shippingAddress.state"
+                  label="都道府県" />
+                <CustomInput v-model="customer.shippingAddress.city" label="市町村" />
+                <CustomInput v-model="customer.shippingAddress.address1" label="丁目•番地•号" />
+                <CustomInput v-model="customer.shippingAddress.address2" label="建物名" />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-      <button type="submit" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 text-base font-medium  focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
-                              text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500">
-        送信
-      </button>
-      <router-link :to="{name: 'app.customers'}" type="button"
-        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-        キャンセル
-      </router-link>
-    </footer>
-  </form>
+      <footer class="sm:flex sm:flex-row-reverse mt-3">
+        <button type="submit" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 text-base font-medium  focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
+                                text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500">
+          送信
+        </button>
+        <router-link :to="{name: 'app.customers'}" type="button"
+          class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+          キャンセル
+        </router-link>
+      </footer>
+    </form>
+  </div>
 </template>
 
 <style scoped>
