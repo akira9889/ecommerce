@@ -36,7 +36,7 @@ function deleteUser(user) {
 </script>
 
 <template>
-  <div class="bg-white px-5 rounded-lg shadow animate-fade-in-down">
+  <div>
     <table class="table-auto w-full">
       <thead>
         <tr>
