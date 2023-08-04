@@ -88,7 +88,7 @@ function deleteCustomer(customer) {
       </div>
       <div class="flex items-end">
         <div>
-          <p class="text-xs mb-1">(氏名、電話番号、メールアドレス)</p>
+          <p class="text-xs mb-1">【氏名(カナ)、電話番号、メールアドレス】</p>
           <input type="text" v-model="search" placeholder="顧客を検索"
             class="appearance-none relative block w-48 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
         </div>
