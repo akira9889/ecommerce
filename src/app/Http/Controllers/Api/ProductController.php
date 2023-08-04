@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductListResource;
-use App\Http\Resources\ProductResource;
 use App\Models\Api\Product;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
@@ -25,10 +24,13 @@ class ProductController extends Controller
         $sortField = request('sort_field', 'updated_at');
         $sortDirection = request('sort_direction', 'desc');
 
-        $products = Product::query()
-            ->orderBy($sortField, $sortDirection)
-            ->where('title', 'like', "%{$search}%")
-            ->paginate($perPage);
+        $query = Product::query();
+
+        if ($search) {
+            $query->where('title', 'like', "%{$search}%");
+        }
+
+        $products = $query->orderBy($sortField, $sortDirection)->paginate($perPage);
 
         return ProductListResource::collection($products);
     }
@@ -56,20 +58,9 @@ class ProductController extends Controller
             $data['image_size'] = $image->getSize();
         }
 
-        $product = Product::create($data);
+        Product::create($data);
 
-        return new ProductResource($product);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        return new ProductResource($product);
+        return response(null, 201);
     }
 
     /**
@@ -98,10 +89,9 @@ class ProductController extends Controller
             }
         }
 
-
         $product->update($data);
 
-        return new ProductResource($product);
+        return response(null, 200);
     }
 
     /**
@@ -124,6 +114,6 @@ class ProductController extends Controller
             throw new \Exception('unable to save file \"{$image->getClientOriginalName()}\"');
         }
 
-        return $path.'/'.$image->getClientOriginalName();
+        return $path . '/' . $image->getClientOriginalName();
     }
 }

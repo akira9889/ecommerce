@@ -11,19 +11,6 @@ import Spinner from '../../components/core/Spinner.vue';
 import store from '../../store';
 import CustomInput from '../../components/core/CustomInput.vue';
 
-const product = ref({
-  id: props.product.id,
-  title: props.product.title,
-  image: props.product.image,
-  description: props.product.description,
-  price: props.product.price,
-  published: props.product.published,
-})
-
-const loading = ref(false)
-
-let errorMsg = ref({})
-
 const props = defineProps({
   modelValue: Boolean,
   product: {
@@ -32,40 +19,39 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue', 'close'])
+const emit = defineEmits(['update:modelValue', 'close', 'submit'])
+
+const product = ref({})
+
+const loading = ref(false)
+
+const errorMsg = ref({})
 
 const show = computed({
   get: () => props.modelValue,
   set: value => emit('update:modelValue', value)
 })
 
-onUpdated(() => {
-  product.value = {
-    id: props.product.id,
-    title: props.product.title,
-    image: props.product.image,
-    description: props.product.description,
-    price: props.product.price,
-    published: props.product.published,
-  }
-})
-
 function closeModal() {
   show.value = false
   errorMsg.value = {}
-  emit('close')
+  emit('close');
 }
 
-function onSubmit() {
+onUpdated(() => {
+  product.value = {
+    ...props.product
+  }
+})
+
+function submit() {
   loading.value = true
   if (product.value.id) {
     store.dispatch('updateProduct', product.value)
       .then(response => {
         loading.value = false
         if (response.status === 200) {
-          //TODO show notification
-          store.dispatch('getProducts')
-          closeModal()
+          emit('submit')
         }
       })
       .catch(({ response }) => {
@@ -77,9 +63,7 @@ function onSubmit() {
       .then(response => {
         loading.value = false
         if (response.status === 201) {
-          //TODO show notification
-          store.dispatch('getProducts')
-          closeModal()
+          emit('submit')
         }
       })
       .catch(({ response }) => {
@@ -120,16 +104,16 @@ function onSubmit() {
 
                 </button>
               </header>
-              <form @submit.prevent="onSubmit">
+              <form @submit.prevent="submit">
                 <div class="bg-white px-4 pt-5 pb-4">
-                  <CustomInput class="mb-4" v-model="product.title" label="商品名" :errorMsg="errorMsg.title" />
+                  <CustomInput class="mb-4" v-model="product.title" label="商品名" :errorMsg="errorMsg?.title" />
                   <CustomInput type="file" class="mb-4" label="商品画像" @change="file => product.image = file"
-                    :errorMsg="errorMsg.image" />
+                    :errorMsg="errorMsg?.image" />
                   <CustomInput type="textarea" class="mb-4" v-model="product.description" label="説明"
-                    :errorMsg="errorMsg.description" />
+                    :errorMsg="errorMsg?.description" />
                   <CustomInput type="number" class="mb-4" v-model="product.price" label="値段" append="円" min="1"
-                    :errorMsg="errorMsg.price" />
-                  <CustomInput type="checkbox" v-model="product.published" label="公開"/>
+                    :errorMsg="errorMsg?.price" />
+                  <CustomInput type="checkbox" v-model="product.published" label="公開" :errorMsg="errorMsg?.published" />
                 </div>
                 <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button type="submit" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 text-base font-medium  focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm

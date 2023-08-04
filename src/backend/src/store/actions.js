@@ -142,17 +142,16 @@ export function getProduct({ commit }, id) {
 }
 
 export function createProduct({ commit }, product) {
+  const form = new FormData();
+  form.append('title', product.title)
+  form.append('description', product.description || '')
+  form.append('price', product.price)
+  form.append('published', product.published ? 1 : 0)
   if (product.image instanceof File) {
-    const form = new FormData();
-    form.append('title', product.title)
     form.append('image', product.image)
-    form.append('description', product.description || '')
-    form.append('price', product.price)
-    form.append('published', product.published ? 1 : 0)
-    product = form
   }
 
-  return axiosClient.post('/products', product)
+  return axiosClient.post('/products', form)
 }
 
 export function updateProduct({ commit }, product) {
@@ -160,7 +159,7 @@ export function updateProduct({ commit }, product) {
   const form = new FormData();
   form.append('id', id)
   form.append('title', product.title)
-  form.append('description', product.description)
+  form.append('description', product.description || '')
   form.append('price', product.price)
   form.append('published', product.published ? 1 : 0)
   form.append('_method', 'PUT')
