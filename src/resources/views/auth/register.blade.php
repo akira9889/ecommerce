@@ -5,9 +5,25 @@
         <p class="text-center text-gray-500 mb-4">
             <a href="{{ route('login') }}" class="text-sm text-purple-700 hover:text-purple-600">既存のアカウントでログイン</a>
         </p>
-        <div class="mb-6">
-            <x-text-input placeholder="氏名" type="text" name="name" :value="old('name')" autofocus/>
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        <div class="mb-6 grid grid-cols-2 gap-3">
+            <div>
+                <x-text-input placeholder="姓" type="text" name="last_name" :value="old('last_name')" autofocus/>
+                <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
+            </div>
+            <div>
+                <x-text-input placeholder="名" type="text" name="first_name" :value="old('first_name')" autofocus/>
+                <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
+            </div>
+        </div>
+        <div class="mb-6 grid grid-cols-2 gap-3">
+            <div>
+                <x-text-input placeholder="セイ" type="text" name="last_kana" :value="old('last_kana')" autofocus/>
+                <x-input-error :messages="$errors->get('last_kana')" class="mt-2" />
+            </div>
+            <div>
+                <x-text-input placeholder="メイ" type="text" name="first_kana" :value="old('first_kana')" autofocus/>
+                <x-input-error :messages="$errors->get('first_kana')" class="mt-2" />
+            </div>
         </div>
         </p>
         <div class="mb-6">
