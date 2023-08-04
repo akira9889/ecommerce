@@ -66,11 +66,11 @@ class RegisteredUserController extends Controller
 
             Auth::login($user);
 
-            Cart::moveCartItemsIntoDb();
+            $deleteCookie = Cart::moveCartItemsIntoDb();
 
             DB::commit();
 
-            return redirect(RouteServiceProvider::HOME);
+            return redirect(RouteServiceProvider::HOME)->withCookie($deleteCookie);
         } catch (\Exception $e) {
             DB::rollback();
         }

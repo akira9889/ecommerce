@@ -5,6 +5,7 @@ namespace App\Http\Helpers;
 use App\Models\Product;
 use App\Models\CartItem;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cookie;
 
 class Cart
 {
@@ -70,6 +71,9 @@ class Cart
         if (!empty($newCartItems)) {
             CartItem::insert($newCartItems);
         }
+
+        // クッキーの削除
+        Cookie::queue(Cookie::forget('cart_items'));
     }
 
     public static function getProductsAndCartItems()
