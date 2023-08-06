@@ -61,7 +61,7 @@ function onChange(value) {
 <template>
   <div class="mt-2">
       <p v-if="errorMsg" class="text-red-500 text-sm leading-4">{{ errorMsg[0]}}</p>
-      <div class="flex rounded-md relative mt-5" :class="{'shadow-sm': type !== 'checkbox'}">
+      <div class="flex rounded-md relative mt-5" :class="{'shadow-sm': !['checkbox', 'file'].includes(type) }">
         <label v-if="inputValue && type !== 'checkbox'" :class="[inputValue ? 'block' : 'hidden', 'absolute text-xs leading-4 text-gray-900 top-0 left-0 -translate-y-[110%]']">{{ label }}</label>
         <span v-if="prepend"
               class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-200 text-gray-500 text-sm">
@@ -76,13 +76,16 @@ function onChange(value) {
                   :placeholder="label"></textarea>
         </template>
         <template v-else-if="type === 'file'">
-          <input :type="type"
-                 :name="name"
-                 :required="required"
-                 :value="inputValue"
-                 @input="emit('change', $event.target.files[0])"
-                 :class="inputClasses"
-                 :placeholder="label"/>
+          <label class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+            <input :type="type"
+                   :name="name"
+                   :required="required"
+                   :value="inputValue"
+                   @input="emit('change', $event.target.files[0])"
+                   class="hidden"
+                   :placeholder="label"/>
+            画像を選択
+          </label>
         </template>
         <template v-else-if="type === 'select'">
             <select :type="type"
@@ -122,7 +125,7 @@ function onChange(value) {
                   autocomplete
             />
         </div>
-      </template>
+        </template>
         <span v-if="append"
               class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-200 text-gray-500 text-sm">
           {{ append }}
