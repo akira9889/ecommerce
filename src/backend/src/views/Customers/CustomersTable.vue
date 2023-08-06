@@ -152,7 +152,7 @@ function deleteCustomer(customer) {
                     <router-link :class="[
                       active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                       'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                    ]" :to="{name: 'app.customers.view', params: {id: customer.id}}">
+                    ]" :to="{ name: 'app.customers.view', params: { id: customer.id } }">
                       <PencilIcon :active="active" class="mr-2 h-5 w-5 text-indigo-400" aria-hidden="true" />
                       編集
                     </router-link>
@@ -175,7 +175,7 @@ function deleteCustomer(customer) {
       </tbody>
       <tbody v-else>
         <tr>
-          <td colspan="5">
+          <td colspan="7">
             <Spinner />
           </td>
         </tr>

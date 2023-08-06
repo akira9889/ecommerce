@@ -1,6 +1,6 @@
 <script setup>
 defineProps({
-  message: { type: String, default: "ロード中..." },
+  message: { type: String, default: "" },
   width: { type: String, default: 'w-16'},
   height: { type: String, default: 'h-16' },
   py: {type: String, default: 'py-2'}
@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <div :class="py" class="flex flex-col items-center mt-4">
+  <div class="flex flex-col items-center justify-center">
     <svg :class="[width, height]" class="animate-spin -ml-1 text-indigo-700" xmlns="http://www.w3.org/2000/svg" fill="none"
       viewBox="0 0 24 24">
       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

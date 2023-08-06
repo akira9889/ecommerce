@@ -66,7 +66,7 @@ function getData() {
     <CustomInput type="select" @change="onChangeDate" v-model="chosenDate" :select-options="dateOptions" />
     <div class="h-[300px] flex items-center justify-center">
       <Bar v-if="!loading" :data="chartData" :options="options" />
-      <Spinner v-else message=""/>
+      <Spinner v-else />
     </div>
   </div>
 </template>

@@ -56,7 +56,8 @@ function deleteProduct(product) {
           :style="{ 'animation-delay': `${index * 0.05}s` }">
           <td class="border-b p-2">{{ product.id }}</td>
           <td class="border-b p-2">
-            <img class="w-16" :src="product.image ? product.image : 'http://localhost:28001/storage/images/no_image.png'" alt="product.title">
+            <img class="w-16" :src="product.image ? product.image : 'http://localhost:28001/storage/images/no_image.png'"
+              alt="product.title">
           </td>
           <td class="border-b p-2 max-w-[200px] white-space-nowrap overflow-hidden text-ellipsis">{{
             product.title }}</td>
@@ -103,7 +104,7 @@ function deleteProduct(product) {
       </tbody>
       <tbody v-else>
         <tr>
-          <td colspan="5">
+          <td colspan="6">
             <Spinner />
           </td>
         </tr>

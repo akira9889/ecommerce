@@ -45,7 +45,7 @@ function handleSidebarOpened() {
     </div>
   </div>
   <div v-else class="min-h-full bg-gray-200 flex items-center justify-center">
-    <Spinner />
+    <Spinner message="ロード中..."/>
   </div>
   <Toast />
 </template>

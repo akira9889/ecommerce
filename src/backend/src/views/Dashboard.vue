@@ -125,7 +125,7 @@ function onChangeDate() {
         <span class="text-3xl font-semibold py-2">{{ productsCount }}<span class="text-sm
         font-normal ml-2 inline-block">個</span></span>
       </template>
-      <Spinner v-else message="" width="w-8" height="h-8" />
+      <Spinner v-else width="w-8" height="h-8" />
     </div>
     <!--/ Active Products -->
     <!-- Active Customers -->
@@ -136,7 +136,7 @@ function onChangeDate() {
         <span class="text-3xl font-semibold py-2">{{ customersCount }}<span
             class="text-sm font-normal ml-2 inline-block">人</span></span>
       </template>
-      <Spinner v-else message="" width="w-8" height="h-8" />
+      <Spinner v-else width="w-8" height="h-8" />
     </div>
     <!--/ Active Customers -->
     <!-- Paid Orders -->
@@ -147,7 +147,7 @@ function onChangeDate() {
         <span class="text-3xl font-semibold py-2">{{ paidOrders }}<span
             class="text-sm font-normal ml-2 inline-block">件</span></span>
       </template>
-      <Spinner v-else message="" width="w-8" height="h-8" />
+      <Spinner v-else width="w-8" height="h-8" />
     </div>
     <!--/ Paid Orders -->
     <!-- Total Income -->
@@ -157,7 +157,7 @@ function onChangeDate() {
       <template v-if="!loading['income-amount']">
         <span class="text-3xl py-2">{{ totalIncome }}<span class="text-sm font-normal ml-2 inline-block">円</span></span>
       </template>
-      <Spinner v-else message="" width="w-8" height="h-8" />
+      <Spinner v-else width="w-8" height="h-8" />
     </div>
     <!--/ Total Income -->
   </div>
@@ -181,13 +181,13 @@ function onChangeDate() {
           <hr>
         </div>
       </template>
-      <Spinner v-else message="" width="w-8" height="h-8" />
+      <Spinner v-else width="w-8" height="h-8" />
     </div>
     <div class="animate-fade-in-down bg-white py-6 px-5 rounded-lg shadow-xl flex flex-col items-center justify-center" style="animation-delay: 0.6s;">
       <label class="font-semibold">国ごとの注文数</label>
       <div class="w-full">
         <Doughnut v-if="!loading['orders-by-country']" :data="ordersByCountry" :options="chartOptions" />
-        <Spinner v-else message="" />
+        <Spinner v-else />
       </div>
     </div>
     <div class="animate-fade-in-down bg-white py-6 px-2 rounded-lg shadow-xl flex flex-col items-center justify-center" style="animation-delay: 0.7s;">
@@ -204,7 +204,7 @@ function onChangeDate() {
           </div>
         </router-link>
       </div>
-      <Spinner v-else message="" width="w-8" height="h-8" />
+      <Spinner v-else width="w-8" height="h-8" />
     </div>
   </div>
 </template>

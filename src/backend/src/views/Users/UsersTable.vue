@@ -58,7 +58,8 @@ function deleteUser(user) {
         <tr v-for="(user, index) of users.data" :key="user.id" class="animate-fade-in-down"
           :style="{ 'animation-delay': `${index * 0.03}s` }">
           <td class="border-b p-2">{{ user.id }}</td>
-          <td class="border-b p-2">{{ user.last_name }} {{ user.first_name }} ({{ user.last_kana }} {{ user.first_kana }})</td>
+          <td class="border-b p-2">{{ user.last_name }} {{ user.first_name }} ({{ user.last_kana }} {{ user.first_kana }})
+          </td>
           <td class="border-b p-2 max-w-[200px] white-space-nowrap overflow-hidden text-ellipsis">{{
             user.email }}</td>
           <td class="border-b p-2">{{ user.updated_at }}</td>

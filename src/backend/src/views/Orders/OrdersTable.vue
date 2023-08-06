@@ -19,7 +19,7 @@ const orderStatuses = ref([])
 onMounted(() => {
   getOrders()
 
-    axiosClient.get('/orders/statuses')
+  axiosClient.get('/orders/statuses')
     .then(({ data }) => {
       orderStatuses.value = data
     })
@@ -107,13 +107,14 @@ function sortOrder(field) {
           <td class="border-b p-2">{{ order.id }}</td>
           <td class="border-b p-2">{{ order.customer.last_name }} {{ order.customer.first_name }}</td>
           <td class="border-b p-2">
-            <OrderStatus :order="order" :orderStatuses="orderStatuses"/>
+            <OrderStatus :order="order" :orderStatuses="orderStatuses" />
           </td>
           <td class="border-b p-2">{{ order.total_price }}円</td>
           <td class="border-b p-2 max-w-[200px] white-space-nowrap overflow-hidden text-ellipsis">{{
             order.created_at }}</td>
           <td class="border-b p-2">
-            <router-link :to="{ name: 'app.orders.view', params: { id: order.id } }" class="w-8 h-8 rounded-full text-indigo-700 border border-indigo-700 flex justify-center items-center hover:text-white hover:bg-indigo-700">
+            <router-link :to="{ name: 'app.orders.view', params: { id: order.id } }"
+              class="w-8 h-8 rounded-full text-indigo-700 border border-indigo-700 flex justify-center items-center hover:text-white hover:bg-indigo-700">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -126,7 +127,7 @@ function sortOrder(field) {
       </tbody>
       <tbody v-else>
         <tr>
-          <td colspan="5">
+          <td colspan="6">
             <Spinner />
           </td>
         </tr>

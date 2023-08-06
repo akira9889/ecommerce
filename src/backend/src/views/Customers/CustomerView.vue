@@ -129,7 +129,7 @@ function onSubmit() {
 </script>
 
 <template>
-  <div class="bg-white p-5">
+  <div class="bg-white p-5 rounded-lg shadow animate-fade-in-down">
     <h2 class="flex justify-between items-center text-2xl font-bold pb-2 border-b border-gray-300">
       顧客情報
     </h2>

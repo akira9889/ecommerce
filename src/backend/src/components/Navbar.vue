@@ -25,7 +25,7 @@ function logout() {
     <button @click="emit('toggle-sidebar')" class="flex items-center rounded justify-center w-8 h-8 text-gray-700 hover:bg-black/10 transition-colors">
       <MenuIcon class="w-6" />
     </button>
-    <Menu as="div" class="relative inline-block text-left">
+    <Menu as="div" class="relative inline-block text-left z-10">
       <MenuButton class="flex items-center">
         <img src="https://randomuser.me/api/portraits/men/12.jpg" class="rounded-full w-8 mr-2">
         <small>{{ currentUser.last_name }} {{ currentUser.first_name }}</small>
