@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import AppLayout from "../components/AppLayout.vue"
 import Dashboard from "../views/Dashboard.vue"
+import ProfileView from "../views/Profile/ProfileView.vue"
 import Products from "../views/Products/Products.vue"
 import Users from "../views/Users/Users.vue"
 import Customers from "../views/Customers/Customers.vue"
@@ -16,8 +17,8 @@ import RequestPassword from "../views/RequestPassword.vue"
 import ResetPassword from "../views/ResetPassword.vue"
 import NotFound from "../views/NotFound.vue"
 import store from '../store'
-const routes = [
 
+const routes = [
   {
     path: '/app',
     name: 'app',
@@ -31,6 +32,11 @@ const routes = [
         path: 'dashboard',
         name: 'app.dashboard',
         component: Dashboard
+      },
+      {
+        path: 'profile',
+        name: 'app.profile',
+        component: ProfileView
       },
       {
         path: 'products',
