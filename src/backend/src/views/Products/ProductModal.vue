@@ -34,6 +34,7 @@ const show = computed({
 
 function closeModal() {
   show.value = false
+  fileUrl.value = ''
   errorMsg.value = {}
   emit('close');
 }
@@ -42,7 +43,17 @@ onUpdated(() => {
   product.value = {
     ...props.product
   }
+  fileUrl.value = product.value.image
 })
+
+const fileUrl = ref('')
+
+function previewImage(file) {
+  if (file) {
+    product.value.image = file
+    fileUrl.value = URL.createObjectURL(file)
+  }
+}
 
 function submit() {
   loading.value = true
@@ -101,14 +112,18 @@ function submit() {
                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
-
                 </button>
               </header>
               <form @submit.prevent="submit">
                 <div class="bg-white px-4 pt-5 pb-4">
                   <CustomInput class="mb-4" v-model="product.title" label="商品名" :errorMsg="errorMsg?.title" />
-                  <CustomInput type="file" class="mb-4" label="商品画像" @change="file => product.image = file"
-                    :errorMsg="errorMsg?.image" />
+                  <div class="grid grid-cols-2 items-center">
+                    <CustomInput type="file" class="mb-4" label="商品画像" @change="previewImage"
+                      :errorMsg="errorMsg?.image" />
+                    <div class="w-full h-full max-h-[300px]">
+                      <img v-if="fileUrl" :src="fileUrl" alt="プレビュー画像" class="w-auto h-full mx-auto object-cover">
+                    </div>
+                  </div>
                   <CustomInput type="textarea" class="mb-4" v-model="product.description" label="説明"
                     :errorMsg="errorMsg?.description" />
                   <CustomInput type="number" class="mb-4" v-model="product.price" label="値段" append="円" min="1"
