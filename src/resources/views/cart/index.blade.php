@@ -53,6 +53,12 @@
                                                 <input type="number" x-model="product.quantity"
                                                     @change="changeQuantity()" min="1"
                                                     class="ml-3 py-1 border-gray-200 focus:border-purple-600 focus:ring-purple-600 w-16" />
+                                                <div class="ml-3 flex">
+                                                    <button @click="handleDecrement"
+                                                        class="px-4 py-2 bg-white font-bold border border-black text-xs border-r-0 hover:bg-gray-100">ー</button>
+                                                    <button @click="handleIncrement"
+                                                        class="px-4 py-2 bg-white font-bold border border-black hover:bg-gray-100">+</button>
+                                                </div>
                                             </div>
                                             <a @click.prevent="removeItemFromCart()" href="#"
                                                 class="text-purple-600 hover:text-purple-500">削除</a>

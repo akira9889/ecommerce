@@ -72,9 +72,14 @@
                     </label>
                     <input x-model="product.quantity" type="number" name="quantity" min="1"
                         class="w-32 focus:border-purple-500 focus:outline-none rounded" />
+                    <div class="ml-3 flex">
+                        <button @click="decrementQuantity"
+                            class="px-4 py-2 bg-white font-bold border border-black text-xs border-r-0 hover:bg-gray-100">ー</button>
+                        <button @click="incrementQuantity"
+                            class="px-4 py-2 bg-white font-bold border border-black hover:bg-gray-100">+</button>
+                    </div>
                 </div>
-                <button @click="addToCart()"
-                    class="btn-primary py-4 text-lg flex justify-center min-w-0 w-full mb-6">
+                <button @click="addToCart()" class="btn-primary py-4 text-lg flex justify-center min-w-0 w-full mb-6">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"

@@ -57,7 +57,10 @@ document.addEventListener("alpine:init", () => {
     return {
       product,
       addToCart() {
-        post(this.product.addToCartUrl, { quantity: product.quantity || 1})
+        if (this.product.quantity < 1) {
+          this.product.quantity = 1
+        }
+        post(this.product.addToCartUrl, { quantity: this.product.quantity || 1})
           .then(result => {
             this.$dispatch('cart-change', { count: result.count })
             this.$dispatch('notify', {
@@ -79,14 +82,34 @@ document.addEventListener("alpine:init", () => {
           })
       },
       changeQuantity() {
-        post(this.product.updateQuantityUrl, { quantity: product.quantity })
+        if (this.product.quantity < 1) {
+          this.product.quantity = 1;
+        }
+        post(this.product.updateQuantityUrl, { quantity: this.product.quantity })
           .then(result => {
             this.$dispatch('cart-change', { count: result.count })
             this.$dispatch('notify', {
               message: "商品数が更新されました"
             })
           })
+      },
+      incrementQuantity() {
+        this.product.quantity++
+      },
+      decrementQuantity() {
+        if (this.product.quantity > 1) {
+          this.product.quantity--
+        }
+      },
+      handleIncrement() {
+        this.incrementQuantity();
+        this.changeQuantity();
+      },
+      handleDecrement() {
+        this.decrementQuantity();
+        this.changeQuantity();
       }
+
     };
   });
 });
