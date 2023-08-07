@@ -4,6 +4,7 @@
         'image' => $product->image,
         'title' => $product->title,
         'price' => $product->price,
+        'quantity' => 1,
         'addToCartUrl' => route('cart.add', $product),
     ]) }})" class="container mx-auto my-12">
         <div class="grid gap-6 grid-cols-1 lg:grid-cols-5">
@@ -69,7 +70,7 @@
                     <label for="quantity" class="block font-bold mr-4">
                         数量
                     </label>
-                    <input type="number" name="quantity" value="1" min="1"
+                    <input x-model="product.quantity" type="number" name="quantity" min="1"
                         class="w-32 focus:border-purple-500 focus:outline-none rounded" />
                 </div>
                 <button @click="addToCart()"

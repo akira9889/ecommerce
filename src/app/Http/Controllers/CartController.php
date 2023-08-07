@@ -23,7 +23,7 @@ class CartController extends Controller
 
     public function add(Request $request, Product $product)
     {
-        $quantity = $request->post('quantity', 1);
+        $quantity = (int)request()->post('quantity');
         $user = $request->user();
         if ($user) {
             $cartItem = CartItem::where(['user_id' => $user->id, 'product_id' => $product->id])->first();
